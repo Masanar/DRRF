@@ -1,0 +1,97 @@
+load vector.maude
+load Producer-Base-Application.maude
+load Consumer-Base-Application.maude
+load Sytem-check-Base-Application-v2
+mod RULES is
+  inc CONFIGURATION .  pr CONVERSION .
+  pr CONSUMER . pr PRODUCER . pr VECTOR .
+  pr SYSTEM-CHECK .
+  sort Sys .
+  op {_} : Configuration -> Sys [format(n d d n)].
+
+  var QS : List{String} . vars N T T' FR CT' END PR CS LT RC : Nat .  var Con : Configuration .
+  vars L L' : List{Nat} . var ATS : AttributeSet . var CT TS CL VC : Vector .  vars TL : Ltl .
+
+  crl [update-time-Producer] :
+  { < PR : Producer | ATS ,  clock-p: CL , end: END , cnt-prod: CT' >  Con }
+  =>
+  { < PR : Producer | ATS ,  clock-p: tick(CL,PR)  , end: END , cnt-prod: CT'  > check(PR,Con) }
+  if CT' < END
+  .
+  crl [update-time-Consumer] :
+  { < PR : Consumer | ATS , freq-C: FR , clock-c: CL , current-mesg: none ,  limit: LT >  Con }
+  =>
+  { < PR : Consumer | ATS , freq-C: FR , clock-c: tick(CL,PR) , current-mesg: none ,  limit: LT > check(PR,Con)   }
+  if ic(CL,PR) <= LT
+  .
+
+
+  crl [send-msg]:
+   { < PR : Producer | ATS , cnt-prod: N , weights:  T  , frequency: FR , clock-p: TS, end: END >  Con }
+   =>
+   { < PR : Producer | ATS , cnt-prod: s(N) , weights: T , frequency: FR , clock-p: tick(TS,PR), end: END  >
+     Unordered-mesg(PR,N,T,TS) check(PR,Con)  }
+
+  if  (END > N)
+  .
+
+
+  crl [Consumer-msg]:
+   { Unordered-mesg(PR,N,T,TS)
+    < CS : Consumer | ATS , current-mesg: none , freq-C: FR , clock-c: CL, limit: LT >  Con }
+   =>
+   {< CS : Consumer | ATS , current-mesg: Unordered-mesg(PR,N,T,TS) , freq-C: FR , clock-c: tick(maxv(CL,TS),CS) , limit: LT  >
+    Notice-mesg(CS,PR,tick(maxv(CL,TS),CS)) check(CS,Con) }
+
+  if ic(CL,CS) <= LT
+  .
+
+
+  rl [Consumer-notice]:
+   { Notice-mesg(CS,PR,VC)
+    < PR : Producer | ATS ,clock-p: CL, Notice-logs: QS >  Con }
+   =>
+   {< PR : Producer | ATS ,clock-p: tick(maxv(CL,VC),PR),Notice-logs: (QS (string(CS,10) + "_" + string(ic(CL,PR), 10)))  >
+     check(PR,Con) }
+  .
+
+  crl [Consuming-msg]:
+   {< CS : Consumer | ATS , actual-time: T' , logs: QS , clock-c: CL ,current-mesg: Unordered-mesg(PR,N,T,TS) >  Con }
+   =>
+   {< CS : Consumer | ATS , actual-time: s(T') , logs: QS , clock-c: tick(CL,CS) ,current-mesg: Unordered-mesg(PR,N,T,TS) >
+     check(CS,Con) }
+  if  s(T') <= T
+  .
+
+  crl [end-msg]:
+   {< CS : Consumer | ATS , actual-time: T' , clock-c: CL , logs: QS , current-mesg: Unordered-mesg(PR,N,T,TS) >  Con }
+   =>
+   {< CS : Consumer | ATS , actual-time: 0 , clock-c: tick(CL,CS) ,logs: (QS (string(PR,10) + "_" + string(N, 10) + "_" + string(T, 10) ) )  , current-mesg: none >
+     check(CS,Con) }
+  if  T' = T
+  .
+
+  rl [send-end] :
+  { < PR : Producer | ATS ,  cnt-prod: END , end: END , finish: false >  Con }
+  =>
+  { < PR : Producer | ATS ,  cnt-prod: END , end: END , finish: true > prod-finish(PR) check(PR,Con) }
+  .
+
+  rl [checker-Finish] :
+  { < RC : checker | ATS, Formula: (TL) , finishc: false  > prod-finish(RC)  Con }
+  =>
+  { < RC : checker | ATS, Formula: interpreter(TL) , finishc: true  >  Con }
+  .
+---
+endm
+load Predicates.maude
+rew [200] {
+< 0 : Producer | cnt-prod: 0,frequency: 1,clock-p: (0 0 0 0 0),weights: 5,end: 10,finish: false,Notice-logs: nil >
+--- < 1 : Producer | cnt-prod: 0,frequency: 3,clock-p: (0 0 0 0 0),weights: 1,end: 10,finish: false,Notice-logs: nil >
+--- < 2 : Consumer | current-mesg: none,freq-C: 2,actual-time: 0,logs: nil,limit: 34, clock-c:(0 0 0 0 0) >
+--- < 3 : Consumer | current-mesg: none,freq-C: 1,actual-time: 0,logs: nil,limit: 30, clock-c:(0 0 0 0 0) >
+--- < 4 : Consumer | current-mesg: none,freq-C: 5,actual-time: 0,logs: nil,limit: 55, clock-c:(0 0 0 0 0) >
+< 0 : checker | count: 0, end-c: 1000, Formula: ([] (4 Causality 2)), finishc: false >
+}
+.
+eof

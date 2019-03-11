@@ -1,0 +1,5 @@
+mod TUPLE is
+  sort Tuple . pr NAT . pr VECTOR .
+  op ((_,_,_))   : Nat Nat Vector -> Tuple [ctor] .
+  op |_;_;_;_| : Nat Nat Nat Nat -> Tuple [ctor] .
+endm

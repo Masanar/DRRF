@@ -1,0 +1,21 @@
+mod CONSUMER is
+  pr NAT . pr STRING  . pr LIST{String} . pr VECTOR .
+  inc CONFIGURATION .
+  subsort Nat < Oid .
+  --- Nat1: quien lo recive, Nat2: el que lo evio
+  --- If you want to be precise, you may define another object: Sentinela.
+  --- The Sentinela would take care of detec the Payload download in a Consumer.
+  op init-consumer        :  Nat Nat Nat Vector     ->  Object     .
+  op Consumer             :                  ->  Cid        [format (c! o)] .
+  op Notice-mesg          :  Nat Nat Nat Vector  ->  Msg        [format(n! o)] .
+  op none                 :                  ->  Msg     [ctor]   .
+  op current-mesg:_       :  Msg             ->  Attribute  .
+  op freq-C:_             :  Nat             ->  Attribute  .
+  op actual-time:_        :  Nat             ->  Attribute  .
+  op logs:_               :  List{String}    ->  Attribute  .
+  op limit:_              :  Nat             ->  Attribute  .
+  op clock-c:_            :  Vector          ->  Attribute  .
+  var FR CO LT : Nat . var vec : Vector .
+  eq init-consumer(CO,FR,LT,vec)
+   = < CO : Consumer | clock-c: vec , freq-C: FR , actual-time: 0 , logs: nil , current-mesg: none, limit: LT  > .
+endm

@@ -1,0 +1,60 @@
+--- The monitor of an object may have the same name of the object
+load Multi-step-atack.maude
+load Temporal-logic-Base-application-v2.maude
+load Predicates-Multi-step-atack.maude
+view TL from TRIV to LTL is
+  sort Elt to Ltl .
+endv
+mod SYSTEM-CHECK is
+  pr NAT . pr LTL . pr LIST{TL} . pr RULES . pr PREDICATES .
+  pr MULTI-STEP-ATACK .
+  op checker        :                          -> Cid         [format (r! o)]  .
+  op Formula:_      : List{TL}                 -> Attribute     .
+  op init-checker   : Nat List{TL}             -> Object        .
+  op Ver-For        : Configuration            -> Configuration .
+  op VERIFICATION   : List{TL}  Configuration  -> List{TL}      .
+  op interpreter    : List{TL}                 -> List{TL}      .
+---
+---
+  var Con : Configuration . var ATS : AttributeSet . vars RC N T : Nat .
+  var PR : Pred . var STL : List{TL} . vars TL  TL' : Ltl . var BO : Bool .
+---
+  eq init-checker(RC,STL) = < RC : checker | Formula: STL > .
+---
+---Semantics for basic cases
+  eq VERIFICATION(false STL,Con) = false VERIFICATION(STL,Con) .
+  eq VERIFICATION(true STL,Con) = true VERIFICATION(STL,Con) .
+  eq VERIFICATION(nil, Con)  = nil .
+  eq VERIFICATION(STL, none) = STL .
+  ceq VERIFICATION((TL STL),Con ) = verification(TL,Con) VERIFICATION(STL,Con)
+    if (TL =/= true) /\ (TL =/= false) .
+---
+  eq interpreter(nil) = nil .
+  eq interpreter(heredity(TL,TL') STL ) = TL interpreter(STL) .
+  eq interpreter(TL STL) = TL interpreter(STL) .
+---
+  rl [checker-Predicate] :
+  { < RC : checker | Formula: (TL  STL) , finish: false  >  Con }
+  =>
+  { < RC : checker | Formula: VERIFICATION((TL STL),Con) , finish: false  >  Con }
+  .
+  rl [checker-Finish] :
+  { < RC : checker | Formula: (STL) , finish: false  > prod-finish(RC)  Con }
+  =>
+  { < RC : checker | Formula: interpreter(STL) , finish: true  >  Con }
+  .
+
+endm
+
+--- rew{
+--- < 0 : Producer | cnt-prod: 0,frequency: 1,clock-p: (0 0 0 0 0),weights: 7,end: 8,finish: false,Notice-logs: nil >
+--- < 1 : Consumer | current-mesg: none,freq-C: 1,actual-time: 0,logs: nil,limit: 70,clock-c: (0 0 0 0 0) >
+--- < 2 : Producer | cnt-prod: 0,frequency: 2,clock-p: (0 0 0 0 0),weights: 10,end: 7,finish: false,Notice-logs: nil >
+--- < 3 : Consumer | current-mesg: none,freq-C: 2,actual-time: 0,logs: nil,limit: 70,clock-c: (0 0 0 0 0) >
+--- < 4 : Consumer | current-mesg: none,freq-C: 1,actual-time: 0,logs: nil,limit: 20,clock-c: (0 0 0 0 0) >
+--- < 5051 : Market | Requets: nil >
+--- < 8030 : Server | Devices: 1,HIPS: false,NIPS: false >
+--- < 0 : checker | Formula: ( (E(Payload-D(0))  ) , finish: false  >
+--- }
+--- .
+eof

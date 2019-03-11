@@ -1,0 +1,86 @@
+mod LTL is
+  pr STRING . pr RULES  . pr MULTI-STEP-ATACK .
+  sorts Pred Ltl .
+  subsorts Bool < Pred < Ltl .
+  op _|-_           : Sys  Ltl         -> Bool .
+  op O_             : Ltl             -> Ltl [ctor] .
+  op []_            : Ltl             -> Ltl [ctor] .
+  op E_             : Ltl             -> Ltl [ctor] .
+  op heredity       : Ltl Ltl         -> Ltl .
+  op _Msg-From_     : Nat Nat   -> Pred .
+  op _Causality_    : Nat Nat   -> Pred .
+  op Payload-D      : Nat       -> Pred .
+  op Scanning-D     : Nat       -> Pred .
+  op Injection-D    : Nat       -> Pred .
+  ---The range of operation verification could be another as Bool or Pred
+  op verification   : Ltl  Configuration          -> Ltl  .
+  var Con : Configuration . var ATS : AttributeSet . vars N T RC SE CS : Nat .
+  var PR : Pred . vars LT LT' LT'' : Ltl . var BO : Bool .
+  var VC : Vector .
+  ---
+  ---
+  ---El predicado es mas interesante si se valida el mensaje en la configuracion
+  ---en vez de cuando ya esta consumido
+  eq {  < RC : Consumer | ATS , current-mesg: Unordered-mesg(SE,N,T,VC) > Con } |- (RC Msg-From SE) = true .
+  eq ( { Con } |- (RC Msg-From SE) ) = false  [owise] .
+
+  --- Causality detection over Consumers
+  ceq { < RC : Consumer | ATS , clock-c: VC > Con } |- (RC Causality SE) = true
+    if ic(VC,SE) > 0 .
+  ceq { < RC : Consumer | ATS , clock-c: VC > Con } |- (RC Causality SE) = false
+    if ic(VC,SE) == 0 [owise] .
+
+  --- --- Causality detection over Producers
+  --- ceq { < SE : Producer | ATS , clock-p: VC > Con } |- (SE Causality RC) = true
+  ---   if ic(VC,SE) > 0 .
+  --- ceq { < SE : Producer | ATS , clock-p: VC > Con } |- (SE Causality RC) = false
+  ---   if ic(VC,SE) == 0 [owise] .
+
+  --- Payload detection
+  eq { Payload(CS) Con } |- (Payload-D(CS)) = true  .
+  eq {Con } |- (Payload-D(CS)) = false [owise] .
+
+  --- Scannig detection
+  eq { Scanning(CS,100100) Con } |- (Scanning-D(CS)) = true  .
+  eq {Con } |- (Scanning-D(CS)) = false [owise] .
+
+  --- Injection detection
+  eq { Injection(CS,SE) Con } |- (Injection-D(SE)) = true  .
+  eq {Con } |- (Injection-D(CS)) = false [owise] .
+
+  ---
+  ---
+  --- Semantics for basic cases
+  eq verification(BO,Con) = BO .
+  eq verification(PR,Con) = {Con} |- PR .
+  --- Semantics for =
+  eq verification(O(LT),Con) = LT .
+  --- Sematica para []O
+  --- ojo por que estoy perdiendo infromacion de la configuracion
+  --- tal vez funcione: verification([](O(LT)),Con) = verification(heredity([](O(LT)),LT),con)
+  eq verification([](O(LT)),Con) = heredity([](O(LT)),LT) .
+  eq verification(heredity(LT,LT'),Con) = if (verification(LT',Con) == false)
+     then false
+     else heredity(LT,LT')
+     fi .
+  --- Sematica para []
+  eq verification([](LT),Con) = if (verification(LT,Con) == false)
+     then false
+     else [](LT)
+     fi .
+  --- Sematica para E
+  eq verification(E(LT),Con) = if verification((LT),Con)
+     then true
+     else E(LT)
+     fi .
+  --- Propositional  logic extention for usual operations in LTL
+   eq true and LT = LT .
+   eq false and LT = false .
+   eq LT and LT = LT .
+   eq false xor LT = LT .
+   eq LT xor LT = false .
+   eq LT and (LT' xor LT'') = LT and LT' xor LT and LT'' .
+   eq not LT = LT xor true .
+   eq LT or LT' = LT and LT' xor LT xor LT' .
+   eq LT implies LT' = not(LT xor LT and LT') .
+endm

@@ -1,0 +1,5 @@
+mod NAMES-CONSUMERS is
+  pr NAT . pr STRING . pr SET{Nat} .
+  inc CONFIGURATION .
+  op Names|_|      :  Set{Nat}    -> Msg       .
+endm

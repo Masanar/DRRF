@@ -1,0 +1,5 @@
+mod TUPLE is
+  sorts 3Tuple Tuple . pr NAT . pr VECTOR .
+  op |_;_;_|   : Nat Nat Vector -> 3Tuple [ctor] .
+  op |_;_;_;_| : Nat Nat Nat Nat -> Tuple [ctor] .
+endm

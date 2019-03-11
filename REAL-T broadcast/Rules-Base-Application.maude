@@ -1,0 +1,92 @@
+load vector.maude
+load Tuple.maude
+load Broadcast.maude
+load Names.maude
+load Producer-Base-Application.maude
+load Consumer-Base-Application.maude
+
+mod RULES is
+  inc CONFIGURATION .  pr CONVERSION .
+  pr CONSUMER . pr PRODUCER . pr VECTOR .
+  pr BROADCAST .  pr NAMES-CONSUMERS .
+  sort Sys .
+  op {_} : Configuration -> Sys [format(n d d n)].
+
+  var QS : List{String} . vars N T T' FR CT' END PR CS LT : Nat .  var Con : Configuration .
+  vars L L' : List{Nat} . var ATS : AttributeSet . var CT TS CL VC : Vector .
+  var NA : Set{Nat} . var LP : List{4Tuple} .
+
+
+  eq
+  { (broadcast ((N,T,TS)) from PR)  (Names| NA |)  Con }
+  =
+  { (multicast ((N,T,TS)) from PR to NA ) (Names| NA |) Con }
+  .
+
+  crl [update-time-Producer] :
+  { < PR : Producer | ATS ,  clock-p: CL , end: END , cnt-prod: CT' >  Con }
+  =>
+  { < PR : Producer | ATS ,  clock-p: tick(CL,PR)  , end: END , cnt-prod: CT'  >  Con }
+  if CT' < END
+  .
+  crl [update-time-Consumer] :
+  { < PR : Consumer | ATS , freq-C: FR , clock-c: CL , current-mesg: none ,  limit: LT >  Con }
+  =>
+  { < PR : Consumer | ATS , freq-C: FR , clock-c: tick(CL,PR) , current-mesg: none ,  limit: LT >  Con }
+  if ic(CL,PR) <= LT
+  .
+
+
+
+  crl [send-msg]:
+   { < PR : Producer | ATS , cnt-prod: N , weights:  T  , frequency: FR , clock-p: TS, end: END >  Con }
+   =>
+   { < PR : Producer | ATS , cnt-prod: s(N) , weights: T , frequency: FR , clock-p: tick(TS,PR), end: END  >
+      (broadcast ((N,T,TS)) from PR)  Con }
+  if FR divides ic(TS,PR) /\ (END > N) /\ (ic(TS,PR) =/= 0)
+  .
+
+
+  crl [Consumer-msg]:
+   { ( msg (N,T,TS) from PR to CS )
+    < CS : Consumer | ATS , current-mesg: none , freq-C: FR , clock-c: CL, limit: LT >  Con }
+   =>
+   {< CS : Consumer | ATS , current-mesg: msg(PR,N,T,TS) , freq-C: FR , clock-c: tick(maxv(CL,TS),CS) , limit: LT  >
+    Notice-mesg(N,CS,PR,tick(maxv(CL,TS),CS)) Con }
+  if (FR divides ic(CL,CS)) /\  ic(CL,CS) <= LT
+  .
+
+  --- (N,ic(CL,PR),CS,ic(VC,CS))
+
+  rl [Consumer-notice]:
+   { Notice-mesg(N,CS,PR,VC)
+    < PR : Producer | ATS ,clock-p: CL, Notice-logs: LP >  Con }
+   =>
+   {< PR : Producer | ATS ,clock-p: tick(maxv(CL,VC),PR),Notice-logs: ( LP  | N ; ic(CL,PR) ; CS ; ic(VC,CS) | )  >
+     Con }
+  .
+
+  crl [Consuming-msg]:
+   {< CS : Consumer | ATS , actual-time: T' , logs: QS , clock-c: CL ,current-mesg: msg(PR,N,T,TS) >  Con }
+   =>
+   {< CS : Consumer | ATS , actual-time: s(T') , logs: QS , clock-c: tick(CL,CS) ,current-mesg: msg(PR,N,T,TS) >  Con }
+  if  s(T') <= T
+  .
+
+  crl [end-msg]:
+   {< CS : Consumer | ATS , actual-time: T' , clock-c: CL , logs: QS , current-mesg: msg(PR,N,T,TS) >  Con }
+   =>
+   {< CS : Consumer | ATS , actual-time: 0 , clock-c: tick(CL,CS) ,logs: (QS  (string(PR,10) + "_" + string(N, 10) + "_" + string(T, 10) ) )  , current-mesg: none >  Con }
+  if  T' = T
+  .
+
+  rl [send-end] :
+  { < PR : Producer | ATS ,  cnt-prod: END , end: END , finish: false >  Con }
+  =>
+  { < PR : Producer | ATS ,  cnt-prod: END , end: END , finish: true > prod-finish(PR) Con }
+  .
+
+
+endm
+
+eof

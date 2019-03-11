@@ -1,0 +1,12 @@
+mod IOT-SERVER is
+  pr NAT . pr STRING  . pr LIST{Nat} . inc CONFIGURATION .
+  subsort Nat < Oid .
+  op init-server          :  Nat List{Nat} ->  Object      .
+  op Server               :                ->  Cid        [format (b! o)] .
+  op Devices:_            :  List{Nat}     ->  Attribute   .
+  op HIPS:_               :  Bool          ->  Attribute   .
+  op NIPS:_               :  Bool          ->  Attribute   .
+  var DE  : List{Nat} . var SE : Nat .
+  eq init-server(SE,DE)
+   = < SE : Server | Devices: DE , HIPS: false , NIPS: false > .
+endm

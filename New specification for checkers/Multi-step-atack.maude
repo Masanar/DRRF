@@ -1,0 +1,134 @@
+load Rules-Base-Application.maude
+load Market.maude
+load IoT-server.maude
+--- You can define the comunication for multi-step atack ie the comunication to the app market
+---  to hdis, nids and server iot. Then you can merge it whit the system that allreedy works
+--- for simulate a normal IOT red.
+
+--- Until now if we want to specify an IoT device that would send and receive messages, we have to model
+--- whit two objects, an object Producer and an object Sender that have the same name (ie the same number).
+ --- but this generates a problem because their vector clocks position will be the same.
+
+--- to avoid the behavior presented previously, if we want to specify an IoT device that would send and receive messages,
+--- the Producer name have to be N and th Consumer name have to be N+1. And the other objects in the configuration have to
+--- avoid this names!
+
+
+mod MULTI-STEP-ATACK is
+  inc CONFIGURATION .  pr CONVERSION .
+  pr CONSUMER . pr PRODUCER . pr VECTOR . pr RULES .
+  pr MARKET . pr IOT-SERVER .
+  op app-download         :  Nat Bool        ->  Msg        [format(n! o)].
+  op Payload              :  Nat             ->  Msg        [format(n! o)].
+  op Scanning             :  Nat Nat         ->  Msg        [format(n! o)].
+  op Injection            :  Nat Nat         ->  Msg        [format(n! o)].
+  op acces-market         :  Nat Vector      ->  Msg        [format(n! o)].
+
+  vars N T  FR END PR CS MI SE LT : Nat .  var Con : Configuration . var ATS ATS' : AttributeSet .
+  vars L L' : List{Nat} .  var TS  CL : Vector . var QS QS' : List{String} . var B : Bool .
+
+  crl [app-request]:
+   { < PR : Producer | ATS , cnt-prod: N ,frequency: FR , clock-p: TS, end: END >
+    < s(PR) : Consumer | ATS' >
+    Con }
+   =>
+   { < PR : Producer | ATS , cnt-prod: s(N) , frequency: FR , clock-p: tick(TS,PR), end: END  >
+     < s(PR) : Consumer | ATS' >
+     acces-market(PR,TS)  Con }
+  if FR divides ic(TS,PR) /\ (END > N) /\ (ic(TS,PR) =/= 0)
+  .
+
+  rl [Consume-request]:
+   {
+    < MI : Market | Requets: (L L') >
+    acces-market(PR,TS) Con }
+   =>
+   { < MI : Market | Requets: (L PR L') > Con }
+  .
+
+  rl [Send-app]:
+   {
+    < MI : Market | Requets: (L N L') > Con }
+   =>
+   { < MI : Market | Requets: (L L') >
+     app-download(N,false)
+     Con }
+  .
+
+
+  crl [Download-app]:
+   { app-download(PR,false)
+    < s(PR) : Consumer | ATS , current-mesg: none , freq-C: FR , clock-c: CL,  limit: LT >  Con }
+   =>
+   {< s(PR) : Consumer | ATS , current-mesg: app-download(s(PR),false) , freq-C: FR , clock-c: tick(CL, s(PR)),  limit: LT  >
+    Con }
+  if (FR divides ic(CL,s(PR))) /\  ic(CL,s(PR)) <= LT
+  .
+
+  rl [Install-app]:
+   {< CS : Consumer | ATS , current-mesg: app-download(CS,false) , clock-c: CL  >
+    Con }
+   =>
+   {< CS : Consumer | ATS , current-mesg: app-download(CS,true) , clock-c: CL  >
+    Con }
+  .
+
+  rl [Register-Download]:
+  {< CS : Consumer | ATS , current-mesg: app-download(CS,B) ,  logs: QS  >
+   Con }
+   =>
+   {< CS : Consumer | ATS , current-mesg: none ,  logs: (QS "app-install" )  >
+    Con }
+   .
+
+   rl [Payload-Generation]:
+   {< CS : Consumer | ATS , current-mesg: none ,  logs: (QS "app-install" QS' ) >
+   Con }
+   =>
+   {< CS : Consumer | ATS , current-mesg: none ,  logs: (QS "app-install-G" QS' )   >
+   Payload(CS)
+   Con }
+   .
+
+
+   crl [Payload-Download]:
+   {< CS : Consumer | ATS ,  clock-c: CL, logs: (QS "app-install-G" QS' ), limit: LT  >
+   Payload(CS)
+   Con }
+   =>
+   {< CS : Consumer | ATS , clock-c: tick(CL,CS) , logs: (QS "app-install-G-I" QS' ), limit: LT  >
+   Con }
+   if  ic(CL,CS) < LT
+   .
+  --- Notice that these rule allows the Comsumer objects to send message this becouse the payload is on the consumer
+  --- Notice that these events don't affect the internal clocks
+
+  crl [Scanning]:
+   {< CS : Consumer | ATS ,  clock-c: CL , limit: LT, logs: (QS "app-install-G-I" QS' )  >   Con }
+   =>
+   {< CS : Consumer | ATS ,  clock-c: CL, limit: LT, logs: (QS "app-install-G-I-S" QS' )  > Scanning(CS,100100)  Con }
+
+  if  ic(CL,CS) < LT
+  .
+
+  rl [scanning-successful]:
+   { < SE : Server | ATS , NIPS: B  > Scanning(CS,100100)  Con }
+   =>
+   {  < SE : Server | ATS , NIPS: true > Scanning(CS,SE)  Con }
+  .
+
+  rl [Injection-generation] :
+  {< CS : Consumer | ATS ,  logs: (QS "app-install-G-I-S" QS' ) > Scanning(CS,SE)  Con }
+  =>
+  {< CS : Consumer | ATS ,  logs: (QS "app-install-G-I-S" QS' ) >  Injection(CS,SE)  Con }
+  .
+
+  rl [Injectioning] :
+  {< SE : Server | ATS , HIPS: B > Injection(CS,SE)  Con }
+  =>
+  {< SE : Server | ATS , HIPS: true >  Con }
+  .
+
+endm
+
+eof

@@ -1,0 +1,59 @@
+mod VECTOR is
+  pr NAT . pr LIST{Nat} .
+  sort Vector .
+  subsorts Nat < List{Nat} < Vector .
+  ---Operation definition:
+  ---   tick: Update the vector clock
+  ---   <v: Define the order in the vector-matter-space
+  ---   maxv: Gives the max between two vectors as  the order say
+  ---   ic(Vec,n): Gives the n clock of the vector vec (ic == individual clock)
+  op tick : Vector Nat    -> Vector  .
+  op _<v_ : Vector Vector -> Bool    .
+  op maxv : Vector Vector -> Vector  .
+  op ic   : Vector Nat    -> Nat     .
+
+  ---Variables definition
+  var N V : Nat .
+  vars vec vec' : Vector .
+
+
+  ---Semantic's for clock tick
+  eq tick(V,N) = s(V) .
+  eq tick(V vec,0) = s(V) vec .
+  eq tick(V vec,N) = V tick(vec,sd(N,1)) .
+
+  ---Semantic's for order definition
+  ---These instructions are for compare all pair of vectors
+
+  ceq vec <v vec' = false
+    if size(vec) < size(vec') .
+  ceq vec <v vec' = false
+    if size(vec') < size(vec) .
+  ---Recursion definition for the order
+  ceq N <v  V = false
+    if V <= N .
+  ceq N <v  V = true
+    if N < V .
+  ceq (N vec) <v (V vec') = false
+    if (V <= N) .  
+  ceq (N vec) <v (V vec') = vec <v vec'
+    if (N <= V) .
+  ---Semantic for maxv operator
+  ---Notice the maxv operation for two vector that have differents size is define too!
+  ---
+  ---if all works ok then if you are in a n-process an you have to update the vector clock
+  ---beacouse the process gets a message the n-clock don't have to be update (exect the tick)
+  ---
+  eq maxv(nil,nil) = nil .
+  eq maxv(nil,vec) = vec .
+  eq maxv(vec,nil) = vec .
+  eq maxv(N,V) = max(N,V) .
+  eq maxv( N vec, V vec') = max(N,V) maxv(vec,vec') .
+
+  ---Semantics for ic
+  eq  ic(V,N)= V .
+  eq  ic(V vec,0) = V .
+  ceq ic(V vec,N) = ic(vec,sd(N,1))
+    if N > 0 .
+
+endm

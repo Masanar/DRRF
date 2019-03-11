@@ -1,0 +1,73 @@
+mod LTL is
+  pr CONFIGURATION .
+  sorts Pred Ltl .
+  subsorts Bool < Pred < Ltl .
+  --- ops true false : -> Ltl [ctor format (g o)] .
+  op ~_ : Ltl -> Ltl [ctor prec 53 format (r o d)] .
+  op _/\_ : Ltl Ltl -> Ltl [comm ctor gather (E e) prec 55 format (d r o d)] .
+  op _\/_ : Ltl Ltl -> Ltl [comm ctor gather (E e) prec 59 format (d r o d)] .
+  op _->_ : Ltl Ltl -> Ltl [gather (e E) prec 65 format (d r o d)] .
+  op _<->_ : Ltl Ltl -> Ltl [prec 65 format (d r o d)] .
+  op O_ : Ltl -> Ltl [ctor prec 53 format (r o d)] .
+  op E_ : Ltl -> Ltl [prec 53 format (r o d)] .
+  op []_ : Ltl -> Ltl [prec 53 format (r d o d)] .
+
+  vars f g : Ltl .
+  --- eq true = true .
+  --- eq false = false .
+  eq true /\ f = f .
+  eq false /\ f = false .
+  eq true \/ f = true .
+  eq false \/ f = f .
+  eq ~ true = false .
+  eq ~ false = true .
+  eq ~ ~ f = f .
+  eq ~ (f \/ g) = ~ f /\ ~ g .
+  eq ~ (f /\ g) = ~ f \/ ~ g .
+  eq ~ O f = O ~ f .
+  eq f -> g = (~ f )\/ g .
+  --- eq true -> false = false .
+  eq f <-> g = (f -> g) /\ (g -> f) .
+
+
+  op heredity       : Ltl Ltl                    -> Ltl .
+  op verification   : Ltl Configuration          -> Ltl  .
+  var Con : Configuration .  vars LT LT' LT'' : Ltl .
+  var PR : Pred .
+
+  eq verification(true,Con) = true .
+  eq verification(false,Con) = false .
+
+  eq verification(~ LT,Con) = ~ verification(LT,Con) .
+
+  --- eq verification(false /\ LT , Con) = false .
+  --- eq verification(true /\ LT, Con ) = verification(LT,Con) .
+  eq verification(LT /\ LT',Con) = verification(LT,Con) /\ verification(LT',Con) .
+
+  --- eq verification(true \/ LT , Con) = true .
+  --- eq verification(false \/ LT, Con ) = verification(LT,Con) .
+  eq verification(LT \/ LT',Con) = verification(LT,Con) \/ verification(LT',Con) .
+
+
+  --- --- Semantics for =
+  eq verification(O(LT),Con) = LT .
+  --- Sematica para []O
+  --- ojo por que estoy perdiendo infromacion de la configuracion
+  --- tal vez funcione: verification([](O(LT)),Con) = verification(heredity([](O(LT)),LT),con)
+  eq verification([](O(LT)),Con) = heredity([](O(LT)),LT) .
+  eq verification(heredity(LT,LT'),Con) = if (verification(LT',Con) == false)
+     then false
+     else heredity(LT,LT')
+     fi .
+  --- Sematica para []
+  eq verification([](LT),Con) = if (verification(LT,Con) == false)
+     then false
+     else [](LT)
+     fi .
+  --- Sematica para E
+  eq verification(E(LT),Con) = if verification((LT),Con)
+     then true
+     else E(LT)
+     fi .
+
+endm

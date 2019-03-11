@@ -1,0 +1,16 @@
+
+
+  --- La idea de la regla [remove-msg] es elimar mensajes:
+  --- cuando un consumidor no esta habilitado para consumidor
+  --- la regla permite eliminar un mensaje de la configuracion,
+  --- sin embargo esa regla puede ser mas interesante para cuando
+  --- los mensajes tenga etiqueta de destinatario. Por esta razon
+  --- esta regla no esta habilitada.
+  --- crl [remove-msg]:
+  ---   {Unordered-mesg(PR,N,T)
+  ---   < CS : Consumer | ATS , current-mesg: none , freq-C: FR , clock: CT >  Con }
+  ---  =>
+  ---  {< CS : Consumer | ATS , current-mesg: none , freq-C: FR , clock: CT  >  Con }
+  ---  if FR > CT .
+
+

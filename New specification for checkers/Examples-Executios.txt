@@ -1,0 +1,64 @@
+{prod-finish(0) prod-finish(2) prod-finish(5)
+ app-download(0, false)
+ app-download(2, false)
+ < 0 : Producer | cnt-prod: 3,frequency: 2,clock-p: (8 0 0 1 1 0),weights: (7 4 6), end: 3,finish: true,Notice-logs: ("3_3" "4_7") >
+ < 1 : Consumer | Payload: false, current-mesg: none,freq-C: 6,actual-time: 0,logs: ("2_0_1" "2_2_1" "5_0_7" "5_2_7"),limit: 30,clock-c: (0 39 4 0 0 5) >
+ < 2 : Producer | cnt-prod: 3,frequency: 1,clock-p: (0 13 7 0 0 0),weights: (1 3 710),end: 3,finish: true,Notice-logs: ("1_5" "1_6") >
+ < 3 : Consumer | Payload: false,current-mesg: none,freq-C: 7,actual-time: 0,logs: ("0_0_7" "5_1_7" "5_3_7"), limit: 30,clock-c: (2 0 0 37 0 7) >
+ < 4 : Consumer | Payload: false,current-mesg: none,freq-C: 1,actual-time: 0,logs: ("0_2_7" "5_4_7" "5_5_7" "5_6_7" "5_7_7" "5_8_7" "5_9_7"), limit: 30,clock-c: (6 19 4 1 66 20) >
+ < 5 : Producer | cnt-prod: 10,frequency: 1,clock-p: (6 31 4 29 58 30),weights: (7 4 6),end: 10,finish: true,Notice-logs: ("1_14" "3_21" "1_22"  "3_23" "4_24" "4_25" "4_26" "4_27" "4_28" "4_29") >
+ < 10 : Server | Devices: 2,HIPS: false, NIPS: false >
+ < 100 : Market | Requets: nil >}
+
+
+
+ rewrite in MULTI-STEP-ATACK : 
+ {< 10 : Server | Devices: 2,HIPS: false,NIPS: false >
+  < 100 : Market | Requets: nil >
+  < 6 : Producer | cnt-prod: 0,frequency: 1,clock-p: (0 0 0 0 0 0 0),weights: (7 4 6),end: 10,finish: false,Notice-logs: nil >
+  < 5 : Consumer | current-mesg: none,freq-C: 2,actual-time: 0,logs: nil,clock-c: (0 0 0 0 0 0 0),Payload: false,limit: 50 >
+  < 4 : Consumer | current-mesg: none,freq-C: 1,actual-time: 0,logs: nil,clock-c: (0 0 0 0 0 0 0),Payload: false,limit: 50 >
+  < 3 : Consumer | current-mesg: none,freq-C: 7,actual-time: 0,logs: nil,clock-c: (0 0 0 0 0 0 0),Payload: false,limit: 50 >}
+  < 2 : Producer | cnt-prod: 0,frequency: 1,clock-p: (0 0 0 0 0 0 0),weights: (1 3 710),end: 3,finish: false,Notice-logs: nil >
+  < 1 : Consumer | current-mesg: none,freq-C: 6,actual-time: 0,logs: nil,clock-c: (0 0 0 0 0 0 0),Payload: false,limit: 50 >
+  < 0 : Producer | cnt-prod: 0,frequency: 2,clock-p: (0 0 0 0 0 0 0),weights: (7 4 6),end: 3,finish: false,Notice-logs: nil >
+
+} .
+ rewrites: 17163 in 24ms cpu (21ms real) (715125 rewrites/second)
+
+ {prod-finish(0) prod-finish(2) prod-finish(6)
+  app-download(0, false) app-download(2,false)
+  < 0 : Producer | cnt-prod: 3,frequency: 2,clock-p: (8 0 0 1 1 0 0),weights: (7 4 6), end: 3,finish: true,Notice-logs: ("3_3" "4_7") >
+  < 1 : Consumer | Payload: false, current-mesg: none,freq-C: 6,actual-time: 0,logs: ("2_2_1" "6_0_7" "6_1_7" "6_3_7" "6_4_7"), limit: 50,clock-c: (0 57 5 0 0 1 10) >
+  < 2 : Producer | cnt-prod: 3,frequency: 1,clock-p: (0 7 7 0 0 1 0),weights: (1 3 710),end: 3,finish: true,Notice-logs: ("5_2" "1_6") >
+  < 3 : Consumer | Payload: false,current-mesg: none,freq-C: 7,actual-time: 0,logs: ("0_0_7" "6_2_7" "6_5_7" "6_7_7"),limit: 50,clock-c: (2 13 5 51 0 1 16) >
+  < 4 : Consumer | Payload: false,current-mesg: none,freq-C: 1,actual-time: 0,logs: ("0_2_7" "6_6_7" "6_8_7" "6_9_7"),limit: 50,clock-c: (6 13 5 1 51 1 20) >
+  < 5 : Consumer | Payload: false,current-mesg: none,freq-C: 2,actual-time: 0,logs: "2_0_1",limit: 50,clock-c: (0 0 1 0 0 51 0) >
+  < 6 : Producer | cnt-prod: 10,frequency: 1,clock-p: (6 49 5 43 30 1 30),weights: (7 4 6),end: 10,finish: true,Notice-logs: ("1_8" "1_21" "3_22" "1_23" "1_24" "3_25" "4_26" "3_27" "4_28" "4_29") >
+  < 10 : Server | Devices: 2,HIPS: false,NIPS: false >
+  < 100 : Market | Requets: nil >}
+
+
+
+
+
+Maude> load Sytem-check-Base-Application.maude
+==========================================
+rewrite in SYSTEM-CHECK : {((((((< 2 : checker | finish: false,Formula: E (2 Causality 0) > < 8030 : Server | Devices: 1,
+    HIPS: false,NIPS: false >) < 5051 : Market | Requets: nil >) < 4 : Consumer | current-mesg: none,freq-C: 1,
+    actual-time: 0,logs: nil,limit: 20,clock-c: (0 0 0 0 0) >) < 3 : Consumer | current-mesg: none,freq-C: 2,actual-time:
+    0,logs: nil,limit: 70,clock-c: (0 0 0 0 0) >) < 2 : Producer | cnt-prod: 0,frequency: 2,clock-p: (0 0 0 0 0),weights:
+    10,end: 7,finish: false,Notice-logs: nil >) < 1 : Consumer | current-mesg: none,freq-C: 1,actual-time: 0,logs: nil,
+    limit: 70,clock-c: (0 0 0 0 0) >) < 0 : Producer | cnt-prod: 0,frequency: 1,clock-p: (0 0 0 0 0),weights: 7,end: 8,
+    finish: false,Notice-logs: nil >} .
+rewrites: 6578 in 28ms cpu (29ms real) (234928 rewrites/second)
+result Sys: {prod-finish(0) < 0 : Producer | cnt-prod: 8,frequency: 1,clock-p: (16 14 0 3 1),weights: 7,end: 8,finish:
+    true,Notice-logs: ("1_2" "4_6" "3_10" "1_15") > < 1 : Consumer | current-mesg: none,freq-C: 1,actual-time: 0,logs: (
+    "0_0_7" "app-install-G-I-S" "0_6_7" "app-install-G-I-S" "2_0_10" "app-install-G-I-S" "2_1_10" "app-install-G-I-S"
+    "2_2_10" "2_3_10"),limit: 70,clock-c: (13 80 8 3 1) > < 2 : Producer | cnt-prod: 7,frequency: 2,clock-p: (13 69 22 41
+    1),weights: 10,end: 7,finish: true,Notice-logs: ("1_15" "1_16" "1_17" "1_18" "3_19" "3_20" "3_21") > < 2 : checker |
+    finish: true,Formula: true > < 3 : Consumer | current-mesg: none,freq-C: 2,actual-time: 0,logs: ("0_4_7" "2_4_10"
+    "2_5_10" "2_6_10"),limit: 70,clock-c: (9 2 14 71 1) > < 4 : Consumer | current-mesg: none,freq-C: 1,actual-time: 0,
+    logs: "0_2_7",limit: 20,clock-c: (5 2 0 0 21) > < 5051 : Market | Requets: nil > < 8030 : Server | Devices: 1,HIPS:
+    true,NIPS: true >}
+

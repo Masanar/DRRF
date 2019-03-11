@@ -1,0 +1,59 @@
+mod PREDICATES is
+  pr STRING . pr RULES  .  including LTL .
+  --- pr MULTI-STEP-ATACK .
+  op _|-_           : Sys  Ltl  -> Ltl .
+  op partial-order  : Nat       -> Pred .
+  op _Causality_    : Nat Nat   -> Pred .
+  op Acces-market-D : Nat       -> Pred .
+  op App-download-D : Nat       -> Pred .
+  op Payload-D      : Nat       -> Pred .
+  op Scanning-D     : Nat       -> Pred .
+  op Injection-D    : Nat       -> Pred .
+  op Order_         : Nat       -> Pred .
+  op Order_of_         : Nat Nat   -> Pred .
+
+  var Con : Configuration . var ATS : AttributeSet . vars N M K T T' R R' RC SE CS : Nat .
+  var PR : Pred . vars LT LT' LT'' : Ltl . var BO : Bool .
+  var VC : Vector . vars LP LP' LP'' : List{4Tuple} .
+  vars LC LC' LC'' : List{3Tuple} .
+
+  eq verification(PR,Con) = {Con} |- PR .
+
+  --- Causality detection over Consumers
+  ceq { < RC : Consumer | ATS , clock-c: VC > Con } |- (RC Causality SE) = true
+    if ic(VC,SE) > 0 .
+  eq { Con } |- (RC Causality SE) = false
+    [owise] .
+  ---
+  ceq { < SE : Producer | ATS , Notice-logs:( LP | N ; T ; CS ; R | LP' | M ; T' ; CS ; R' | LP'') > Con } |- (Order SE of CS) = true
+    if N > M .
+  ceq { < CS : Consumer | ATS , logs:( LC | SE ; N ; K | LC' | SE ; M ; T | LC'') > Con } |- (Order CS of SE ) = true
+    if N > M  .
+  eq { Con } |- (Order CS of SE ) = false   [owise] .
+  ---
+  ceq { < SE : Producer | ATS , Notice-logs:( LP | N ; T ; K ; R | LP' | M ; T' ; K ; R' | LP'') > Con } |- (Order SE) = true
+    if (N < M /\ R' < R /\ T < T') .
+  eq { Con } |- (Order SE) = false   [owise] .
+
+  --- { < 10 : Producer | finish: false , cnt-prod: 0 , weights: 1 , frequency: 1 , clock-p: 0 , end: 1 , Notice-logs: | 1 ; 10 ; 4 ; 8 | | 2 ; 20 ; 4 ; 3 |  > } |- Order 10
+  ---Acces market detection
+  --- eq {acces-market(CS,VC) Con } |- (Acces-market-D(CS)) = true  .
+  --- eq {Con } |- (Acces-market-D(CS)) = false [owise] .
+  ---
+  --- ---Acces market detection
+  --- eq {app-download(CS,false) Con } |- (App-download-D(CS)) = true  .
+  --- eq {Con } |- (App-download-D(CS)) = false [owise] .
+  ---
+  --- --- Payload detection
+  --- eq { Payload(CS) Con } |- (Payload-D(CS)) = true  .
+  --- eq {Con } |- (Payload-D(CS)) = false [owise] .
+  ---
+  --- --- Scannig detection
+  --- eq { Scanning(CS,100100) Con } |- (Scanning-D(CS)) = true  .
+  --- eq {Con } |- (Scanning-D(CS)) = false [owise] .
+  ---
+  --- --- Injection detection
+  --- eq { Injection(CS,SE) Con } |- (Injection-D(SE)) = true  .
+  --- eq {Con } |- (Injection-D(CS)) = false [owise] .
+  ---
+endm

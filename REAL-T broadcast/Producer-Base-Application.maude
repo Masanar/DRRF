@@ -1,0 +1,22 @@
+view 4Tuple from TRIV to TUPLE is
+  sort Elt to Tuple .
+endv
+mod PRODUCER is
+  pr NAT . pr STRING  . pr BOOL . pr VECTOR . pr TUPLE .
+  inc CONFIGURATION .  pr LIST{4Tuple} .
+  subsort Nat < Oid .
+  op prod-finish          :  Nat                -> Msg       [format(n! o)].
+  op msg       :  Nat Nat Nat Vector -> Msg       [format(n! o)].
+  op Producer             :                     -> Cid       [format (y! o)] .
+  op cnt-prod:_           :  Nat                -> Attribute .
+  op frequency:_          :  Nat                -> Attribute .
+  op clock-p:_            :  Vector             -> Attribute  .
+  op weights:_            :  Nat                -> Attribute .
+  op end:_                :  Nat                -> Attribute .
+  op finish:_             :  Bool               -> Attribute .
+  op init-prod            :  Nat  Nat Nat Nat -> Object    .
+  op Notice-logs:_        :  List{4Tuple}  ->  Attribute  .
+  vars WE ST END FR : Nat .
+  eq init-prod(ST,WE,FR,END)
+   = < ST : Producer | finish: false , cnt-prod: 0 , weights: WE , frequency: FR , clock-p: 0 , end: END, Notice-logs: nil  > .
+endm

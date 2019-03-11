@@ -1,0 +1,16 @@
+load Tuple.maude
+mod BROADCAST is
+  inc CONFIGURATION .
+  pr NAT . pr LIST{Nat} . pr SET{Nat} . pr TUPLE .
+
+  op msg_from_to_ : Tuple Nat Nat -> Msg [ctor] .
+  op multicast_from_to_ : Tuple Nat Set{Nat} -> Configuration .
+  op broadcast_from_ : Tuple Nat -> Msg [ctor] .
+  var MC : Tuple . vars SENDER ARECEIVER : Nat .  var OTHER-RECEIVERS : Set{Nat} .
+
+  eq multicast MC from SENDER to empty = none .
+  eq multicast MC from SENDER to (ARECEIVER , OTHER-RECEIVERS) =
+  (msg MC from SENDER to ARECEIVER)
+  (multicast MC from SENDER to OTHER-RECEIVERS) .
+
+endm

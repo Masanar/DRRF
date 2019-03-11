@@ -1,0 +1,57 @@
+--- The monitor of an object may have the same name of the object
+--- load Multi-step-atack.maude
+load Rules-Base-Application.maude
+load Temporal-logic-Base-application-v2.maude
+load Predicates.maude
+view TL from TRIV to LTL is
+  sort Elt to Ltl .
+endv
+mod SYSTEM-CHECK is
+  pr NAT . pr LTL . pr LIST{TL} . pr RULES . pr PREDICATES .
+  --- pr MULTI-STEP-ATACK .
+  op checker        :                          -> Cid         [format (r! o)]  .
+  op Formula:_      : Ltl                      -> Attribute     .
+  op end-c:_        : Nat                      -> Attribute     .
+  op count:_        : Nat                      -> Attribute     .
+  op init-checker   : Nat Ltl Nat                 -> Object        .
+  op interpreter    : Ltl                      -> Ltl      .
+  ---
+  ---
+  var Con : Configuration . var ATS : AttributeSet . vars RC N T END : Nat .
+  var PR : Pred .  vars TL  TL' : Ltl . var BO : Bool .
+  ---
+  eq init-checker(RC,TL,END) = < RC : checker | Formula: TL, finish: false , count: 0 , end-c: END > .
+  ---
+  eq interpreter(nil) = nil .
+  eq interpreter(heredity(TL,TL')) = TL .
+  eq interpreter(TL) = TL .
+  ---
+  crl [checker-Predicate] :
+  { < RC : checker | Formula: TL , finish: false, count: N , end-c: END >  Con }
+  =>
+  { < RC : checker | Formula: verification(TL,Con) , finish: false, count: s(N), end-c: END  >  Con }
+
+  if N <= END
+  .
+  rl [checker-Finish] :
+  { < RC : checker | ATS, Formula: (TL) , finish: false  > prod-finish(RC)  Con }
+  =>
+  { < RC : checker | ATS, Formula: interpreter(TL) , finish: true  >  Con }
+  .
+
+endm
+
+
+
+search {
+< 0 : Producer | cnt-prod: 0,frequency: 3,clock-p: (0 0 0 0),weights: 1,end: 6,finish: false,Notice-logs: nil >
+< 1 : Consumer | current-mesg: none,freq-C: 2,actual-time: 0,logs: nil,limit: 50, clock-c:(0 0 0 0 ) >
+< 2 : Consumer | current-mesg: none,freq-C: 1,actual-time: 0,logs: nil,limit: 50, clock-c:(0 0 0 0 ) >
+< 3 : Consumer | current-mesg: none,freq-C: 1,actual-time: 0,logs: nil,limit: 50, clock-c:(0 0 0 0 ) >
+< 0 : checker | Formula: (E (Order 0)) , finish: false , count: 0 , end-c: 50 >
+Names| (1,2,3) |
+}
+=>*
+{Con < 0 : checker | ATS , Formula: true  >}
+.
+eof

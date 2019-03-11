@@ -1,0 +1,10 @@
+mod MARKET is
+  pr NAT . pr STRING  . pr LIST{Nat} . inc CONFIGURATION .
+  subsort Nat < Oid .
+  op init-market          :  Nat           ->  Object     .
+  op Market               :                ->  Cid        [format (g! o)].
+  op Requets:_            : List{Nat}      -> Attribute   .
+  var MI : Nat .
+  eq init-market(MI)
+   = < MI : Market | Requets: nil > .
+endm

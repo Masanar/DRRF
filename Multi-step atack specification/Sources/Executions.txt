@@ -1,0 +1,82 @@
+
+rewrite [2000000] in RULES : {(((((((((((< 11 : Consumer | current-mesg: none,freq-C: 9,actual-time: 0,logs: nil,clock-c: (0 0 0 0 0 0 0 0 0 0 0 0) > < 12 :
+    Consumer | current-mesg: none,freq-C: 5,actual-time: 0,logs: nil,clock-c: (0 0 0 0 0 0 0 0 0 0 0 0) >) < 10 : Consumer | current-mesg: none,freq-C: 1,
+    actual-time: 0,logs: nil,clock-c: (0 0 0 0 0 0 0 0 0 0 0 0) >) < 9 : Consumer | current-mesg: none,freq-C: 2,actual-time: 0,logs: nil,clock-c: (0 0 0 0 0
+    0 0 0 0 0 0 0) >) < 8 : Consumer | current-mesg: none,freq-C: 6,actual-time: 0,logs: nil,clock-c: (0 0 0 0 0 0 0 0 0 0 0 0) >) < 7 : Consumer |
+    current-mesg: none,freq-C: 3,actual-time: 0,logs: nil,clock-c: (0 0 0 0 0 0 0 0 0 0 0 0) >) < 6 : Consumer | current-mesg: none,freq-C: 1,actual-time: 0,
+    logs: nil,clock-c: (0 0 0 0 0 0 0 0 0 0 0 0) >) < 5 : Consumer | current-mesg: none,freq-C: 4,actual-time: 0,logs: nil,clock-c: (0 0 0 0 0 0 0 0 0 0 0 0)
+    >) < 4 : Producer | cnt-prod: 0,frequency: 15,clock-p: (0 0 0 0 0 0 0 0 0 0 0 0),weights: (3 40 55),end: 3,finish: false,Notice-logs: nil >) < 3 :
+    Producer | cnt-prod: 0,frequency: 15,clock-p: (0 0 0 0 0 0 0 0 0 0 0 0),weights: (45 4 8),end: 3,finish: false,Notice-logs: nil >) < 2 : Producer |
+    cnt-prod: 0,frequency: 15,clock-p: (0 0 0 0 0 0 0 0 0 0 0 0),weights: (70 10),end: 3,finish: false,Notice-logs: nil >) < 1 : Producer | cnt-prod: 0,
+    frequency: 15,clock-p: (0 0 0 0 0 0 0 0 0 0 0 0),weights: (7 4 6),end: 3,finish: false,Notice-logs: nil >) < 0 : Producer | cnt-prod: 0,frequency: 10,
+    clock-p: (0 0 0 0 0 0 0 0 0 0 0 0),weights: (8 3 4),end: 3,finish: false,Notice-logs: nil >} .
+rewrites: 113973788 in 140288ms cpu (140284ms real) (812427 rewrites/second)
+result Sys:
+            {prod-finish(0) prod-finish(1) prod-finish(2) prod-finish(3) prod-finish(4)
+             < 0 : Producer | cnt-prod: 3,frequency: 10,clock-p: (32 0 0 0 0 0 21 0 0 0 0 0),weights: (8 3 4),end: 3,finish: true,Notice-logs: ("6_11" "6_21" "6_31") >
+             < 1 : Producer | cnt-prod: 3,frequency: 15,clock-p: (30 47 0 0 0 0 49 0 0 0 0 0),weights: (7 4 6),end: 3,finish: true,Notice-logs: ("6_16" "6_31" "6_46") >
+             < 2 : Producer | cnt-prod: 3,frequency: 15,clock-p: (30 45 47 0 0 109 58 1 0 0 0 0),weights: (70 10),end: 3,finish: true,Notice-logs: ("6_16" "7_31" "5_46") >
+             < 3 : Producer | cnt-prod: 3,frequency: 15,clock-p: (0 0 0 47 0 0 0 0 0 1 1 1),weights: (45 4 8),end: 3,finish: true,Notice-logs: ("9_16" "10_31" "11_46") >
+             < 4 : Producer | cnt-prod: 3,frequency: 15,clock-p: (30 45 45 0 47 197 58 1 0 0 0 1),weights: (3 40 55),end: 3,finish: true,Notice-logs: ("12_16" "5_35" "5_46") >
+             < 5 : Consumer | current-mesg: none,freq-C: 4, actual-time: 0,logs: ("2_2_70" "4_1_3" "4_2_3"),clock-c: (30 45 45 0 45 199355 58 1 0 0 0 1) >
+             < 6 : Consumer | current-mesg: none,freq-C: 1,actual-time: 0,logs: ("0_0_8" "0_1_8" "0_2_8" "1_0_7" "1_1_7" "1_2_7" "2_0_70"),clock-c: (30 45 15 0 0 0 129 0 0 0 0 0) >
+             < 7 : Consumer | current-mesg: none,freq-C: 3,actual-time: 0,logs: "2_1_70",clock-c: (30 45 30 0 0 0 58 72 0 0 0 0) >
+             < 8 : Consumer | current-mesg: none,freq-C: 6,actual-time: 0,logs: nil,clock-c: (0 0 0 0 0 0 0 0 73 0 0 0) >
+             < 9 : Consumer | current-mesg: none,freq-C: 2,actual-time: 0,logs: "3_0_45",clock-c: (0 0 0 15 0 0 0 0 0 47 0 0) >
+             < 10 : Consumer | current-mesg: none,freq-C: 1,actual-time: 0,logs: "3_1_45",clock-c: (0 0 0 30 0 0 0 0 0 1 47 0) >
+             < 11 : Consumer | current-mesg: none,freq-C:9,actual-time: 0,logs: "3_2_45",clock-c: (0 0 0 45 0 0 0 0 0 1 1 47) >
+             < 12 : Consumer | current-mesg: none,freq-C: 5,actual-time: 0,logs: "4_0_3", clock-c: (0 0 0 0 15 0 0 0 0 0 0 5) >}
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+rewrite [2000] in RULES : {(((((((((((< 11 : Consumer | current-mesg: none,freq-C: 7,actual-time: 0,logs: nil,clock-c: (0 0 0 0 0 0 0 0 0 0 0 0) > < 12 :
+    Consumer | current-mesg: none,freq-C: 8,actual-time: 0,logs: nil,clock-c: (0 0 0 0 0 0 0 0 0 0 0 0) >) < 10 : Consumer | current-mesg: none,freq-C: 6,
+    actual-time: 0,logs: nil,clock-c: (0 0 0 0 0 0 0 0 0 0 0 0) >) < 9 : Consumer | current-mesg: none,freq-C: 5,actual-time: 0,logs: nil,clock-c: (0 0 0 0 0
+    0 0 0 0 0 0 0) >) < 8 : Consumer | current-mesg: none,freq-C: 4,actual-time: 0,logs: nil,clock-c: (0 0 0 0 0 0 0 0 0 0 0 0) >) < 7 : Consumer |
+    current-mesg: none,freq-C: 3,actual-time: 0,logs: nil,clock-c: (0 0 0 0 0 0 0 0 0 0 0 0) >) < 6 : Consumer | current-mesg: none,freq-C: 2,actual-time: 0,
+    logs: nil,clock-c: (0 0 0 0 0 0 0 0 0 0 0 0) >) < 5 : Consumer | current-mesg: none,freq-C: 1,actual-time: 0,logs: nil,clock-c: (0 0 0 0 0 0 0 0 0 0 0 0)
+    >) < 4 : Producer | cnt-prod: 0,frequency: 15,clock-p: (0 0 0 0 0 0 0 0 0 0 0 0),weights: (3 40 55),end: 3,finish: false,Notice-logs: nil >) < 3 :
+    Producer | cnt-prod: 0,frequency: 15,clock-p: (0 0 0 0 0 0 0 0 0 0 0 0),weights: (45 4 8),end: 3,finish: false,Notice-logs: nil >) < 2 : Producer |
+    cnt-prod: 0,frequency: 15,clock-p: (0 0 0 0 0 0 0 0 0 0 0 0),weights: (70 10),end: 3,finish: false,Notice-logs: nil >) < 1 : Producer | cnt-prod: 0,
+    frequency: 15,clock-p: (0 0 0 0 0 0 0 0 0 0 0 0),weights: (7 4 6),end: 3,finish: false,Notice-logs: nil >) < 0 : Producer | cnt-prod: 0,frequency: 10,
+    clock-p: (0 0 0 0 0 0 0 0 0 0 0 0),weights: (8 3 4),end: 3,finish: false,Notice-logs: nil >} .
+rewrites: 86989 in 120ms cpu (119ms real) (724908 rewrites/second)
+result Sys: {prod-finish(0) prod-finish(1) prod-finish(2) prod-finish(3) prod-finish(4)
+    < 0 : Producer | cnt-prod: 3,frequency: 10,clock-p: (32 0 0 0 0 33 0 0 0 0 0 0),weights: (8 3 4),end: 3,finish: true,Notice-logs: ("5_11" "5_21" "5_31") >
+    < 1 : Producer | cnt-prod: 3,frequency: 15,clock-p: (30 47 0 0 0 83 0 0 0 0 0 0),weights: (7 4 6),end: 3,finish: true,Notice-logs: ("5_16" "5_31" "5_46") >
+    < 2 : Producer | cnt-prod: 3,frequency: 15,clock-p: (30 45 47 0 0 101 53 0 1 0 0 0),weights: (70 10),end: 3,finish: true,Notice-logs: ("5_16" "6_31" "8_46") >
+    < 3 : Producer | cnt-prod: 3,frequency: 15,clock-p: (0 0 0 47 0 0 0 55 0 1 1 0),weights: (45 4 8),end: 3,finish: true,Notice-logs: ("9_16" "10_31" "7_46") >
+    < 4 : Producer | cnt-prod: 3,frequency: 15,clock-p: (30 45 15 0 47 218 0 0 0 0 0 0),weights: (3 40 55),end: 3,finish: true,Notice-logs: ("5_16" "5_31" "5_46") >
+    < 5 : Consumer | current-mesg: none,freq-C: 1,actual-time: 0,logs: ("0_0_8" "0_1_8" "0_2_8" "1_0_7" "1_1_7" "1_2_7" "2_0_70" "4_0_3" "4_1_3" "4_2_3"),clock-c: (30 45 15 0 45 1376 0 0 0 0 0 0) >
+    < 6 : Consumer | current-mesg: none,freq-C: 2,actual-time: 0,logs: "2_1_70",clock-c: (30 45 30 0 0 101 124 0 0 0 0 0) >
+    < 7 : Consumer | current-mesg: none,freq-C: 3,actual-time: 0,logs: "3_2_45",clock-c: (0 0 0 45 0 0 0 101 0 1 1 0) >
+    < 8 : Consumer | current-mesg: none,freq-C: 4,actual-time: 0,logs: "2_2_70",clock-c: (30 45 45 0 0 101 53 0 72 0 0 0) >
+    < 9 : Consumer | current-mesg: none,freq-C: 5,actual-time: 0,logs: "3_0_45",clock-c: (0 0 0 15 0 0 0 0 0 47 0 0) >
+    < 10 : Consumer | current-mesg: none,freq-C: 6,actual-time: 0,logs: "3_1_45",clock-c: (0 0 0 30 0 0 0 0 0 1 47 0) >
+    < 11 : Consumer | current-mesg: none,freq-C: 7,actual-time: 0,logs: nil,clock-c: (0 0 0 0 0 0 0 0 0 0 0 8) >
+    < 12 : Consumer | current-mesg: none,freq-C: 8,actual-time: 0,logs: nil,clock-c: (0 0 0 0 0 0 0 0 0 0 0 0) >}
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+rewrite [2000] in RULES : {(((((((((((< 11 : Consumer | current-mesg: none,freq-C: 7,actual-time: 0,logs: nil,clock-c: (0 0 0 0 0 0 0 0 0 0 0 0) > < 12 :
+    Consumer | current-mesg: none,freq-C: 8,actual-time: 0,logs: nil,clock-c: (0 0 0 0 0 0 0 0 0 0 0 0) >) < 10 : Consumer | current-mesg: none,freq-C: 6,
+    actual-time: 0,logs: nil,clock-c: (0 0 0 0 0 0 0 0 0 0 0 0) >) < 9 : Consumer | current-mesg: none,freq-C: 5,actual-time: 0,logs: nil,clock-c: (0 0 0 0 0
+    0 0 0 0 0 0 0) >) < 8 : Consumer | current-mesg: none,freq-C: 4,actual-time: 0,logs: nil,clock-c: (0 0 0 0 0 0 0 0 0 0 0 0) >) < 7 : Consumer |
+    current-mesg: none,freq-C: 3,actual-time: 0,logs: nil,clock-c: (0 0 0 0 0 0 0 0 0 0 0 0) >) < 6 : Consumer | current-mesg: none,freq-C: 2,actual-time: 0,
+    logs: nil,clock-c: (0 0 0 0 0 0 0 0 0 0 0 0) >) < 5 : Consumer | current-mesg: none,freq-C: 1,actual-time: 0,logs: nil,clock-c: (0 0 0 0 0 0 0 0 0 0 0 0)
+    >) < 4 : Producer | cnt-prod: 0,frequency: 5,clock-p: (0 0 0 0 0 0 0 0 0 0 0 0),weights: (3 40 55),end: 3,finish: false,Notice-logs: nil >) < 3 :
+    Producer | cnt-prod: 0,frequency: 4,clock-p: (0 0 0 0 0 0 0 0 0 0 0 0),weights: (45 4 8),end: 3,finish: false,Notice-logs: nil >) < 2 : Producer |
+    cnt-prod: 0,frequency: 3,clock-p: (0 0 0 0 0 0 0 0 0 0 0 0),weights: (70 10),end: 3,finish: false,Notice-logs: nil >) < 1 : Producer | cnt-prod: 0,
+    frequency: 2,clock-p: (0 0 0 0 0 0 0 0 0 0 0 0),weights: (7 4 6),end: 3,finish: false,Notice-logs: nil >) < 0 : Producer | cnt-prod: 0,frequency: 1,
+    clock-p: (0 0 0 0 0 0 0 0 0 0 0 0),weights: (8 3 4),end: 3,finish: false,Notice-logs: nil >} .
+rewrites: 104820 in 132ms cpu (130ms real) (794090 rewrites/second)
+result Sys: {prod-finish(0) prod-finish(1) prod-finish(2) prod-finish(3) prod-finish(4)
+    < 0 : Producer | cnt-prod: 3,frequency: 1,clock-p: (9 0 0 0 0 2 3 1 0 0 0 0),weights: (8 3 4),end: 3,finish: true,Notice-logs: ("5_2" "7_5" "6_8") >
+    < 1 : Producer | cnt-prod: 3,frequency: 2,clock-p: (1 12 0 0 0 13 0 0 5 1 0 0),weights: (7 4 6),end: 3,finish: true,Notice-logs: ("9_3" "8_7" "5_11") >
+    < 2 : Producer | cnt-prod: 3,frequency: 3,clock-p: (0 0 11 0 0 0 0 0 0 0 7 2),weights: (70 10),end: 3,finish: true,Notice-logs: ("11_4" "12_7" "10_10") >
+    < 3 : Producer | cnt-prod: 3,frequency: 4,clock-p: (1 10 0 15 0 121 0 0 5 1 0 0),weights: (45 4 8),end: 3,finish: true,Notice-logs: ("5_5" "5_13" "5_14") >
+    < 4 : Producer | cnt-prod: 3,frequency: 5,clock-p: (1 10 0 12 19 181 0 0 5 1 0 0),weights: (3 40 55),end: 3,finish: true,Notice-logs: ("5_16" "5_17" "5_18") >
+    < 5 : Consumer | current-mesg: none,freq-C: 1,actual-time: 0,logs: ("0_0_8" "1_2_7" "3_0_45" "3_1_45" "3_2_45" "4_0_3" "4_1_3" "4_2_3"),clock-c: (1 10 0 12 15 1663 0 0 5 1 0 0) >
+    < 6 : Consumer | current-mesg: none,freq-C: 2,actual-time: 0,logs: "0_2_8",clock-c: (7 0 0 0 0 2 12 1 0 0 0 0) >
+    < 7 : Consumer | current-mesg: none,freq-C: 3,actual-time: 0,logs: "0_1_8",clock-c: (4 0 0 0 0 2 0 10 0 0 0 0) >
+    < 8 : Consumer | current-mesg: none,freq-C: 4,actual-time: 0,logs: "1_1_7",clock-c: (0 6 0 0 0 0 0 0 13 1 0 0) >
+    < 9 : Consumer | current-mesg: none,freq-C: 5,actual-time: 0,logs: "1_0_7",clock-c: (0 2 0 0 0 0 0 0 0 9 0 0) >
+    < 10 : Consumer | current-mesg: none,freq-C: 6,actual-time: 0,logs: "2_2_70",clock-c: (0 0 9 0 0 0 0 0 0 0 78 2) >
+    < 11 : Consumer | current-mesg: none,freq-C: 7,actual-time: 0,logs: "2_0_70",clock-c: (0 0 3 0 0 0 0 0 0 0 0 72) >
+    < 12 : Consumer | current-mesg: none,freq-C: 8,actual-time: 0,logs: "2_1_70",clock-c: (0 0 6 0 0 0 0 0 0 0 0 73) >}
