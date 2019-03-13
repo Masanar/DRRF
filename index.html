@@ -1,9 +1,81 @@
-<!doctype html>
-<html>
+<html lang="en" dir="ltr">
   <head>
-    <title>This is the title of the webpage!</title>
+    <meta charset="utf-8">
+    <title>DRRF</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
   </head>
   <body>
-    <p>This is an example paragraph. Anything in the <strong>body</strong> tag will appear on the page, just like this <strong>p</strong> tag and its contents.</p>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="#">Overview</a></li>
+          <li><a href="Examples.html">Examples</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <section class="main">
+      <section class="articles">
+        <article>
+          <h2>DRRF</h2>
+          <br>
+          <p> We study the semantics of distributed reactive programming languages using rewriting logic. We propose a reactive event-based programming framework with explicit support for distribution, concurrency, and explicit time manipulation <i>DRRF</i> which was developed on <i>Maude</i>. The framework uses rewriting logic and includes a model of the distributed base application, a model of observables and observers, and a model for complex predicate constructs supporting explicit time manipulation.
+
+          </p>
+                <br>
+          <!-- <p>DRRF framework is composed of differents Maude modules that model the dynamic behavior of a distributed reactive system. Thereby there are modules like Consumer-Base-Application, Producers-Base-Application, and Rules-Base-Application that specify the behavior of an environment where the observables issue data flow toward the system. Likewise, the module System-check-Base-Application introduces a formal model for a distributed observer that watches the data flow issue by an observable. Those observers watch data flow behavior and react to specific constraints model by LTL formulas that are model at module Temporal-Logic-Basic-Application.</p> -->
+          <!-- La imagen que va en este lugar muestra la organizacionde los diferente modulos, mejorar la del paper -->
+          <!-- <img src="html/imagenes/prueba.jpg" border="1" alt="Este es el ejemplo de un texto alternativo" width="400" height="300"> -->
+        </article>
+        <article class="">
+          <h2>Prerequisites</h2>
+          <br>
+          <p>The Maude system is free software, is a high-performance reflective language and system supporting both equational and rewriting logic specification and programming for a wide range of applications. Maude Systemf runs on linux and Mac OS, is avaliable at the <a href="http://maude.cs.illinois.edu/w/index.php/Maude_download_and_installation">Maude home Page</a>.  </p>
+          <br>
+          <p>A maude session can be started by calling the maude.linux64 binary in the Maude dictionary from the Linux shell window, the procces is similar for other plataforms. For example  we can move to the dictionary and invoke Maude and we can see the version of the system  being executed, the date it was built, corpytight information, and the current date.</p>
+          <br>
+          <pre><code>
+            ~/Maude-2.7.1-linux$ ./maude.linux64
+                              \||||||||||||||||||/
+                            --- Welcome to Maude ---
+                              /||||||||||||||||||\
+                    Maude 2.7.1 built: Jun 27 2016 16:35:16
+                      Copyright 1997-2016 SRI International
+                            Tue Mar 12 11:30:31 2019
+            Maude>
+          </code></pre>
+          <br>
+
+          <p> Then the Maude Sytem is ready to accept Maude modules and commands. During the session, the user interacts with the system by entering a request at the Maude prompt.</p>
+        </article>
+        <article>
+          <h2>Modules</h2>
+          <br>
+          <p>DRRF framework is composed of several Maude modules that model the dynamic behavior of a distributed reactive system.</p>
+          <br>
+          <ul>
+            <li><code>Base-Application.maude</code>: specify the behavior of an environment where the observables issue data flow toward the system.</li>
+            <li><code>Observers.maude</code>: formal model for a distributed observer that watches the data flow issue by an observable.</li>
+            <li><code>Temporal-logic.maude</code>: formal model for LTL formulas.</li>
+            <li><code>Predicates.maude</code>: specify LTL predicates.</li>
+            <li><code>Vector.maude</code>: specify vector clocks using in the system.</li>
+          </ul>
+          <a href="#">Download</a>
+        </article>
+      </section>
+
+      <!-- <aside>
+        <h3>Este es mi Sidebar</h3>
+        <p>
+          Brainfuck (jodecerebros), es un lenguaje de programación esotérico, diseñado por Urban Müller en 1993, con el objetivo de hacer un lenguaje que fuera a la vez muy simple, Turing completo y que requiriese un compilador pequeño. Müller basó Brainfuck en la máquina de Turing y le sirvió de inspiración el compilador de 1024 bytes de tamaño del lenguaje FALSE.
+        </p>
+      </aside> -->
+    </section>
+    <footer>
+      <p>
+        Mateo Sanabria Ardila- Mateo.sanabria@escuelaing.edu.co
+      </p>
+    </footer>
+
   </body>
 </html>
