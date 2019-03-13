@@ -21,11 +21,11 @@
           <!-- <h2>In this series of examples we show how to use Maude and the diferents modules intoduces by DRRF</h2> -->
           <h2>Base Application Behavior</h2>
           <br>
-          The file <code>Base-Application.maude</code> contains the modulo <code>RULES</code> whos define the dinamic behavior of distributed reactive base appilcation, we can do the following to enter it:
+          The file <code>Base-Application.maude</code> contains the modulo <code>RULES</code> whos define the dynamic behavior of a distributed reactive base appilcation, we can do the following to enter it:
           <pre> <code>
 maude> load Base-Application.maude
           </code> </pre>
-          Affter entering the module <code>RULES</code> into Maude, we can, for example define a simple everioment: there are two Producer-Observables and three Consumer-Observables that issue data flow to the system.
+          After entering the module <code>RULES</code> into Maude, we can, for example, define a simple environment: there are two Producer-Observables and three Consumer-Observables that issue data flow to the system.
           <pre> <code>
  < 0 : Producer | cnt-prod: 0,frequency: 1,clock-p: (0 0 0 0 0),weights: 5,end: 4,finish: false,Notice-logs: nil >
  < 1 : Producer | cnt-prod: 0,frequency: 3,clock-p: (0 0 0 0 0),weights: 1,end: 3,finish: false,Notice-logs: nil >
@@ -33,7 +33,7 @@ maude> load Base-Application.maude
  < 3 : Consumer | current-mesg: none,freq-C: 1,actual-time: 0,logs: nil,limit: 30, clock-c:(0 0 0 0 0) >
  < 4 : Consumer | current-mesg: none,freq-C: 5,actual-time: 0,logs: nil,limit: 55, clock-c:(0 0 0 0 0) >
           </code> </pre>
-          This example is commented on at the end of the file, you can eliminate the <code>---</code> then when you load the file Maude is going to use <code>rew</code> comand to explore the behavior of tha above example, keep in mind that each different execution may result in a different result. The result present information about the total rewrites that Maude did and the result of that posible trace i.e a application of consecutive rewiting rules.
+          This example is commented on at the end of the file, you can eliminate the <code>---</code> then when you load the file Maude is going to use <code>rew</code> command to explore the behavior of the above example, keep in mind that each different execution may result in a different result. The result present information about the total rewrites that Maude did and the result of that possible trace i.e an application of consecutive rewriting rules.
           <pre> <code>
 rewrite in RULES :
 {
@@ -66,22 +66,80 @@ result Sys:
 
 
           </code> </pre>
-          This rewrite example shows a possible execution for the system pesented above, as you can see the producer fished its execution and the atributte <code> Notice-logs</code> of each producer gives information about that and the Consumers consunme diferents amount of messages due to its different initial configurations. Note that at this point we only load the base behavior of the reactive base application witout observers, the system only issue data flows bettewn the diferents observables. If you want to test a particular configuration you can change the configuration of the initial state of the system and reload the module.
+          This rewrite example shows a possible execution for the system presented above, as you can see the producer fished its execution and the attributte <code> Notice-logs</code> of each producer gives information about that and the Consumers consume different amount of messages due to its different initial configurations. Note that at this point we only load the base behavior of the reactive base application without observers, the system only issue data flows between the different  observables. If you want to test a particular configuration you can change the configuration of the initial state of the system and reload the module.
         </article>
         <article>
           <h2>Observer Behavior</h2>
-
+          <br>
           <p>
             The file Observers.maude contains the modulo <code>OBSERVER</code> whos define the dinamic behavior of distributed reactive observer over a base application, this module automatically loads the modules <code>Base-Application.maude </code> ,<code> Temporal-logic.maude </code> , <code>Predicates.maude</code> , we can do the following to enter it:
           </p>
           <pre> <code>
 maude> Observers.maude
           </code> </pre>
+             The example contained at this file introduces one of the most interesting commands of Maude <code>search</code> this command allows to explore the reachable state space, from an initial state. In this way, you can know which behavior would happen and which don't. In the example, we want to know if there is a state where LTL formula <code>(E Order 1 of 0)</code> verify by the <code>observer-1</code> is fulfilled.
+             <pre> <code>
+search in SYSTEM-CHECK :
+  {< 1 : checker | Formula: (E Order 1 of 0),finish: false,end-c: 50,count: 0 >
+   < 2 : Consumer | current-mesg: none,freq-C: 1,actual-time: 0,logs: nil,limit: 20,clock-c: (0 0 0 0 0) >
+   < 1 : Consumer | current-mesg: none,freq-C: 2,actual-time: 0,logs: nil,limit: 20,clock-c: (0 0 0 0 0) >
+   < 0 : Producer | cnt-prod: 0,frequency: 1,clock-p: (0 0 0 0 0),weights: 2,end: 7,finish: false,Notice-logs: nil >}
+   =>*
+   {Con  < 1 : checker | ATS':AttributeSet,Formula: (E Order 1 of 0) >}
+   .
+ Solution 1 (state 0)
+ states: 1  rewrites: 0 in 0ms cpu (0ms real) (~ rewrites/second)
+   Con --> < 0 : Producer | cnt-prod: 0,frequency: 1,clock-p: (0 0 0 0 0),weights: 2,end: 7,finish: false,Notice-logs: nil >
+   < 1 : Consumer | current-mesg: none,freq-C: 2,actual-time: 0,logs: nil, limit: 20,clock-c: (0 0 0 0 0) >
+   < 2 : Consumer | current-mesg: none,freq-C: 1,actual-time: 0,logs: nil,limit: 20,clock-c: (0 0 0 0 0) >
+   ATS':AttributeSet --> finish: false,end-c: 50,count: 0
+
+ Solution 2 (state 1)
+ states: 2  rewrites: 6 in 0ms cpu (0ms real) (~ rewrites/second)
+   Con --> < 0 : Producer | cnt-prod: 0,frequency: 1,clock-p: (0 0 0 0 0),weights: 2,end: 7,finish: false,Notice-logs: nil >
+   < 1 : Consumer | current-mesg: none,freq-C: 2,actual-time: 0,logs: nil, limit: 20,clock-c: (0 0 0 0 0) >
+   < 2 : Consumer | current-mesg: none,freq-C: 1,actual-time: 0,logs: nil,limit: 20,clock-c: (0 0 0 0 0) >
+   ATS':AttributeSet --> finish: false,end-c: 50,count: 1
+  .
+  .
+  .
 
 
+               </code> </pre>
+        </article>
+        <article>
+          <h2>Predicates Definition</h2>
+          <br>
+          <p>If you want to define new predicates for observers to monitor a specific behavior in the data flow, you have to modife the file <code>Predicate.maude</code> in this file you will find the syntaxis for predicate definition.
+</p>
+          <pre> <code>
+
+mod PREDICATES is
+  pr STRING . pr RULES  .  including LTL .
+  --- pr MULTI-STEP-ATACK .
+  op _|-_           : Sys  Ltl  -> Ltl .
+  op partial-order  : Nat       -> Pred .
+  op _Causality_    : Nat Nat   -> Pred .
+  op Acces-market-D : Nat       -> Pred .
+  op App-download-D : Nat       -> Pred .
+  op Payload-D      : Nat       -> Pred .
+  op Scanning-D     : Nat       -> Pred .
+  op Injection-D    : Nat       -> Pred .
+  op Order_         : Nat       -> Pred .
+  op Order_of_ : Nat Nat -> Pred .
+  ...
+  --- Causality detection over Consumers
+  ceq { < RC : Consumer | ATS , clock-c: VC > Con } |- (RC Causality SE) = true
+    if ic(VC,SE) > 0 .
+  eq { Con } |- (RC Causality SE) = false   [owise] .
+  ...
+endm
+          </code> </pre>
+          <p>
+            For example, the predicate <code> Causality </code> is defined by specifying in what state it is valid and any other state than this will be invalid(<code>owise</code>).
+          </p>
         </article>
       </section>
-
     </section>
     <footer>
       <p>
