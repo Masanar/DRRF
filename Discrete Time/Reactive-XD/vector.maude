@@ -1,44 +1,53 @@
 fmod DISCRTE-TIME is
   pr NAT .
-  sorts Time .
+  sorts Time NzTime .
+  subsort NzTime < Time .
+  subsort Nat < Time .
+  subsort NzNat < NzTime .
 
   op zero : -> Time .
   op _plus_ : Time Time -> Time [assoc comm prec 33 gather (E e)] .
   op _monus_ : Time Time -> Time [prec 33 gather (E e)] .
-  op _le_ : Time Time -> Bool [prec 37] .
-  op _lt_ : Time Time -> Bool [prec 37] .
-  op _ge_ : Time Time -> Bool [prec 37] .
-  op _gt_ : Time Time -> Bool [prec 37] .
 
+  vars N N' : Nat .
+  eq zero = 0 .
+  eq N plus N' = N + N' .
+  eq N monus N' = if N > N' then sd(N, N') else 0 fi .
   eq zero plus R:Time = R:Time .
-  eq R:Time le R':Time = (R:Time lt R':Time) or (R:Time == R':Time) .
-  eq R:Time ge R':Time = R':Time le R:Time .
-  eq R:Time gt R':Time = R':Time lt R:Time .
+
 endfm
 
+view Time from TRIV to DISCRTE-TIME is
+  sort Elt to Time .
+endv
+
 mod VECTOR is
-  pr NAT . pr LIST{Nat} .
+  pr NAT . pr LIST{Time} .
   sort Vector .
-  subsorts Nat < List{Nat} < Vector .
+  subsorts Time < List{Time} < Vector .
   ---Operation definition:
   ---   tick: Update the vector clock
   ---   <v: Define the order in the vector-matter-space
   ---   maxv: Gives the max between two vectors as  the order say
   ---   ic(Vec,n): Gives the n clock of the vector vec (ic == individual clock)
-  op tick : Vector Nat    -> Vector  .
+  op tick : Vector Time   -> Vector  .
   op _<v_ : Vector Vector -> Bool    .
   op maxv : Vector Vector -> Vector  .
-  op ic   : Vector Nat    -> Nat     .
+  op ic   : Vector Time    -> Time     .
 
   ---Variables definition
-  var N V : Nat .
+  var N V : Time .
   vars vec vec' : Vector .
 
 
-  ---Semantic's for clock tick
-  eq tick(V,N) = s(V) .
-  eq tick(V vec,0) = s(V) vec .
-  eq tick(V vec,N) = V tick(vec,sd(N,1)) .
+  ---Semantic's for clock ticking
+  --- eq tick(V,N) = s(V) .
+  --- eq tick(V vec,0) = s(V) vec .
+  --- eq tick(V vec,N) = V tick(vec,sd(N,1)) .
+  --- El tick por defecto aumenta el reloj en una unidad
+  eq tick(V,N) = (V plus 1) .
+  eq tick(V vec,0) = (V plus 1) vec .
+  eq tick(V vec,N) = V tick(vec,(N monus 1)) .
 
   ---Semantic's for order definition
   ---These instructions are for compare all pair of vectors
