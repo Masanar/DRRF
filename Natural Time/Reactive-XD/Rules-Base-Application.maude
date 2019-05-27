@@ -3,13 +3,20 @@ load Tuple.maude
 load Producer-Base-Application.maude
 load Consumer-Base-Application.maude
 mod RULES is
-  inc CONFIGURATION .  pr CONVERSION .
-  pr CONSUMER . pr PRODUCER . pr VECTOR .
+  inc CONFIGURATION .
+  pr CONVERSION .
+  pr CONSUMER .
+  pr PRODUCER .
+  pr VECTOR .
   sort Sys .
   op {_} : Configuration -> Sys [format(n d d n)].
 
-   vars N T T' FR CT' END PR CS LT : Nat .  var Con : Configuration .
-  vars L L' : List{Nat} . var ATS ATS' : AttributeSet . var CT TS CL VC : Vector .  var LP : List{4Tuple} .
+  vars N T T' FR CT' END PR CS LT : Nat .
+  var CT TS CL VC : Vector .
+  var ATS ATS' : AttributeSet .
+  vars L L' : List{Nat} .
+  var Con : Configuration .
+  var LP : List{4Tuple} .
   var QS : List{3Tuple} .
 
   crl [update-time-Producer] :
@@ -24,8 +31,6 @@ mod RULES is
   { < PR : Consumer | ATS , freq-C: FR , clock-c: tick(CL,PR) , current-mesg: none ,  limit: LT >  Con }
   if ic(CL,PR) <= LT
   .
-
-
 
   crl [send-msg]:
    { < PR : Producer | ATS , cnt-prod: N , weights:  T  , frequency: FR , clock-p: TS, end: END >  Con }

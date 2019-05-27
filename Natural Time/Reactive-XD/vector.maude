@@ -1,3 +1,21 @@
+fmod DISCRTE-TIME is
+  pr NAT .
+  sorts Time .
+
+  op zero : -> Time .
+  op _plus_ : Time Time -> Time [assoc comm prec 33 gather (E e)] .
+  op _monus_ : Time Time -> Time [prec 33 gather (E e)] .
+  op _le_ : Time Time -> Bool [prec 37] .
+  op _lt_ : Time Time -> Bool [prec 37] .
+  op _ge_ : Time Time -> Bool [prec 37] .
+  op _gt_ : Time Time -> Bool [prec 37] .
+
+  eq zero plus R:Time = R:Time .
+  eq R:Time le R':Time = (R:Time lt R':Time) or (R:Time == R':Time) .
+  eq R:Time ge R':Time = R':Time le R:Time .
+  eq R:Time gt R':Time = R':Time lt R:Time .
+endfm
+
 mod VECTOR is
   pr NAT . pr LIST{Nat} .
   sort Vector .
@@ -35,14 +53,14 @@ mod VECTOR is
   ceq N <v  V = true
     if N < V .
   ceq (N vec) <v (V vec') = false
-    if (V <= N) .  
+    if (V <= N) .
   ceq (N vec) <v (V vec') = vec <v vec'
     if (N <= V) .
   ---Semantic for maxv operator
   ---Notice the maxv operation for two vector that have differents size is define too!
   ---
   ---if all works ok then if you are in a n-process an you have to update the vector clock
-  ---beacouse the process gets a message the n-clock don't have to be update (exect the tick)
+  ---beacouse the process gets a message the n-clock do not have to be update (exect the tick)
   ---
   eq maxv(nil,nil) = nil .
   eq maxv(nil,vec) = vec .
