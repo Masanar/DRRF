@@ -1,6 +1,46 @@
 load vector.maude
-load Producer-Base-Application.maude
-load Consumer-Base-Application.maude
+mod PRODUCER is
+  pr NAT . pr STRING  . pr BOOL . pr VECTOR .
+  inc CONFIGURATION . pr LIST{String} .
+  subsort Nat < Oid .
+  op prod-finish          :  Nat                -> Msg       [format(n! o)].
+  op Unordered-mesg       :  Nat Nat Nat Vector -> Msg       [format(n! o)].
+  op Producer             :                     -> Cid       [format (y! o)] .
+  op cnt-prod:_           :  Nat                -> Attribute .
+  op frequency:_          :  Nat                -> Attribute .
+  op clock-p:_            :  Vector             -> Attribute  .
+  op weights:_            :  Nat                -> Attribute .
+  op end:_                :  Nat                -> Attribute .
+  op finish:_             :  Bool               -> Attribute .
+  op init-prod            :  Nat  Nat Nat Nat -> Object    .
+  op Notice-logs:_        :  List{String}  ->  Attribute  .
+  vars WE ST END FR : Nat .
+  eq init-prod(ST,WE,FR,END)
+   = < ST : Producer | finish: false , cnt-prod: 0 , weights: WE , frequency: FR , clock-p: 0 , end: END, Notice-logs: nil  > .
+endm
+
+mod CONSUMER is
+  pr NAT . pr STRING  . pr LIST{String} . pr VECTOR .
+  inc CONFIGURATION .
+  subsort Nat < Oid .
+  --- Nat1: quien lo recive, Nat2: el que lo evio
+  --- If you want to be precise, you may define another object: Sentinela.
+  --- The Sentinela would take care of detec the Payload download in a Consumer.
+  op init-consumer        :  Nat Nat Nat Vector     ->  Object     .
+  op Consumer             :                  ->  Cid        [format (c! o)] .
+  op Notice-mesg          :  Nat Nat Vector  ->  Msg        [format(n! o)] .
+  op none                 :                  ->  Msg     [ctor]   .
+  op current-mesg:_       :  Msg             ->  Attribute  .
+  op freq-C:_             :  Nat             ->  Attribute  .
+  op actual-time:_        :  Nat             ->  Attribute  .
+  op logs:_               :  List{String}    ->  Attribute  .
+  op limit:_              :  Nat             ->  Attribute  .
+  op clock-c:_            :  Vector          ->  Attribute  .
+  var FR CO LT : Nat . var vec : Vector .
+  eq init-consumer(CO,FR,LT,vec)
+   = < CO : Consumer | clock-c: vec , freq-C: FR , actual-time: 0 , logs: nil , current-mesg: none, limit: LT  > .
+endm
+
 mod RULES is
   inc CONFIGURATION .  pr CONVERSION .
   pr CONSUMER . pr PRODUCER . pr VECTOR .
@@ -8,7 +48,7 @@ mod RULES is
   op {_} : Configuration -> Sys [format(n d d n)].
 
   var QS : List{String} . vars N T T' FR CT' END PR CS LT : Nat .  var Con : Configuration .
-  vars L L' : List{Nat} . var ATS : AttributeSet . var CT TS CL VC : Vector .
+  var ATS : AttributeSet . var CT TS CL VC : Vector .
 
   crl [update-time-Producer] :
   { < PR : Producer | ATS ,  clock-p: CL , end: END , cnt-prod: CT' >  Con }
@@ -74,12 +114,12 @@ mod RULES is
 
 
 endm
-rew {
-< 0 : Producer | cnt-prod: 0,frequency: 1,clock-p: (0 0 0 0 0),weights: 5,end: 10,finish: false,Notice-logs: nil >
-< 1 : Producer | cnt-prod: 0,frequency: 3,clock-p: (0 0 0 0 0),weights: 1,end: 10,finish: false,Notice-logs: nil >
-< 2 : Consumer | current-mesg: none,freq-C: 2,actual-time: 0,logs: nil,limit: 34, clock-c:(0 0 0 0 0) >
-< 3 : Consumer | current-mesg: none,freq-C: 1,actual-time: 0,logs: nil,limit: 30, clock-c:(0 0 0 0 0) >
-< 4 : Consumer | current-mesg: none,freq-C: 5,actual-time: 0,logs: nil,limit: 55, clock-c:(0 0 0 0 0) >
-}
-.
+--- rew {
+--- < 0 : Producer | cnt-prod: 0,frequency: 1,clock-p: (0 0 0 0 0),weights: 5,end: 10,finish: false,Notice-logs: nil >
+--- < 1 : Producer | cnt-prod: 0,frequency: 3,clock-p: (0 0 0 0 0),weights: 1,end: 10,finish: false,Notice-logs: nil >
+--- < 2 : Consumer | current-mesg: none,freq-C: 2,actual-time: 0,logs: nil,limit: 34, clock-c:(0 0 0 0 0) >
+--- < 3 : Consumer | current-mesg: none,freq-C: 1,actual-time: 0,logs: nil,limit: 30, clock-c:(0 0 0 0 0) >
+--- < 4 : Consumer | current-mesg: none,freq-C: 5,actual-time: 0,logs: nil,limit: 55, clock-c:(0 0 0 0 0) >
+--- }
+--- .
 eof

@@ -35,7 +35,7 @@ mod VECTOR is
   ceq N <v  V = true
     if N < V .
   ceq (N vec) <v (V vec') = false
-    if (V <= N) .  
+    if (V <= N) .
   ceq (N vec) <v (V vec') = vec <v vec'
     if (N <= V) .
   ---Semantic for maxv operator
@@ -57,3 +57,93 @@ mod VECTOR is
     if N > 0 .
 
 endm
+
+
+--- fmod DISCRTE-TIME is
+---
+---   pr NAT .
+---   sorts Time NzTime .
+---   subsort NzTime < Time .
+---   subsort Nat < Time .
+---   subsort NzNat < NzTime .
+---
+---   op zero : -> Time .
+---   op _plus_ : Time Time -> Time [assoc comm prec 33 gather (E e)] .
+---   op _monus_ : Time Time -> Time [prec 33 gather (E e)] .
+---
+---   vars N N' : Nat .
+---   eq zero = 0 .
+---   eq N plus N' = N + N' .
+---   eq N monus N' = if N > N' then sd(N, N') else 0 fi .
+---   eq zero plus R:Time = R:Time .
+---
+--- endfm
+---
+--- view Time from TRIV to DISCRTE-TIME is
+---   sort Elt to Time .
+--- endv
+---
+--- mod VECTOR is
+---   pr NAT .
+---   pr LIST{Time} .
+---   sort Vector .
+---   subsorts Time < List{Time} < Vector .
+---   ---Operation definition:
+---   ---   tick: Update the vector clock
+---   ---   <v: Define the order in the vector-matter-space
+---   ---   maxv: Gives the max between two vectors as  the order say
+---   ---   ic(Vec,n): Gives the n clock of the vector vec (ic == individual clock)
+---   op tick : Vector Time   -> Vector  .
+---   op _<v_ : Vector Vector -> Bool    .
+---   op maxv : Vector Vector -> Vector  .
+---   op ic   : Vector Time    -> Time     .
+---
+---   ---Variables definition
+---   var N V : Time .
+---   vars vec vec' : Vector .
+---
+---
+---   ---Semantic's for clock ticking
+---   --- eq tick(V,N) = s(V) .
+---   --- eq tick(V vec,0) = s(V) vec .
+---   --- eq tick(V vec,N) = V tick(vec,sd(N,1)) .
+---   --- El tick por defecto aumenta el reloj en una unidad
+---   eq tick(V,N) = (V plus 1) .
+---   eq tick(V vec,0) = (V plus 1) vec .
+---   eq tick(V vec,N) = V tick(vec,(N monus 1)) .
+---
+---   ---Semantic's for order definition
+---   ---These instructions are for compare all pair of vectors
+---
+---   ceq vec <v vec' = false
+---     if size(vec) < size(vec') .
+---   ceq vec <v vec' = false
+---     if size(vec') < size(vec) .
+---   ---Recursion definition for the order
+---   ceq N <v  V = false
+---     if V <= N .
+---   ceq N <v  V = true
+---     if N < V .
+---   ceq (N vec) <v (V vec') = false
+---     if (V <= N) .
+---   ceq (N vec) <v (V vec') = vec <v vec'
+---     if (N <= V) .
+---   ---Semantic for maxv operator
+---   ---Notice the maxv operation for two vector that have differents size is define too!
+---   ---
+---   ---if all works ok then if you are in a n-process an you have to update the vector clock
+---   ---beacouse the process gets a message the n-clock do not have to be update (exect the tick)
+---   ---
+---   eq maxv(nil,nil) = nil .
+---   eq maxv(nil,vec) = vec .
+---   eq maxv(vec,nil) = vec .
+---   eq maxv(N,V) = max(N,V) .
+---   eq maxv( N vec, V vec') = max(N,V) maxv(vec,vec') .
+---
+---   ---Semantics for ic
+---   eq  ic(V,N)= V .
+---   eq  ic(V vec,0) = V .
+---   ceq ic(V vec,N) = ic(vec,sd(N,1))
+---     if N > 0 .
+---
+--- endm

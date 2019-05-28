@@ -1,6 +1,6 @@
 mod PREDICATES is
   pr STRING . pr RULES  .  including LTL .
-  --- pr MULTI-STEP-ATACK .
+  pr MULTI-STEP-ATACK .
   op _|-_           : Sys  Ltl  -> Ltl .
   op partial-order  : Nat       -> Pred .
   op _Causality_    : Nat Nat   -> Pred .
@@ -23,25 +23,25 @@ mod PREDICATES is
     [owise] .
 
 
+  --- Acces market detection
+  eq {acces-market(CS,VC) Con } |- (Acces-market-D(CS)) = true  .
+  eq {Con } |- (Acces-market-D(CS)) = false [owise] .
+
   ---Acces market detection
-  --- eq {acces-market(CS,VC) Con } |- (Acces-market-D(CS)) = true  .
-  --- eq {Con } |- (Acces-market-D(CS)) = false [owise] .
-  ---
-  --- ---Acces market detection
-  --- eq {app-download(CS,false) Con } |- (App-download-D(CS)) = true  .
-  --- eq {Con } |- (App-download-D(CS)) = false [owise] .
-  ---
-  --- --- Payload detection
-  --- eq { Payload(CS) Con } |- (Payload-D(CS)) = true  .
-  --- eq {Con } |- (Payload-D(CS)) = false [owise] .
-  ---
-  --- --- Scannig detection
-  --- eq { Scanning(CS,100100) Con } |- (Scanning-D(CS)) = true  .
-  --- eq {Con } |- (Scanning-D(CS)) = false [owise] .
-  ---
-  --- --- Injection detection
-  --- eq { Injection(CS,SE) Con } |- (Injection-D(SE)) = true  .
-  --- eq {Con } |- (Injection-D(CS)) = false [owise] .
-  ---
+  eq {app-download(CS,false) Con } |- (App-download-D(CS)) = true  .
+  eq {Con } |- (App-download-D(CS)) = false [owise] .
+
+  --- Payload detection
+  eq { Payload(CS) Con } |- (Payload-D(CS)) = true  .
+  eq {Con } |- (Payload-D(CS)) = false [owise] .
+
+  --- Scannig detection
+  eq { Scanning(CS,100100) Con } |- (Scanning-D(CS)) = true  .
+  eq {Con } |- (Scanning-D(CS)) = false [owise] .
+
+  --- Injection detection
+  eq { Injection(CS,SE) Con } |- (Injection-D(SE)) = true  .
+  eq {Con } |- (Injection-D(CS)) = false [owise] .
+
 
 endm

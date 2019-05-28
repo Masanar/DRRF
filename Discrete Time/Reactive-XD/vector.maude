@@ -1,4 +1,5 @@
 fmod DISCRTE-TIME is
+
   pr NAT .
   sorts Time NzTime .
   subsort NzTime < Time .
@@ -22,7 +23,8 @@ view Time from TRIV to DISCRTE-TIME is
 endv
 
 mod VECTOR is
-  pr NAT . pr LIST{Time} .
+  pr NAT .        
+  pr LIST{Time} .
   sort Vector .
   subsorts Time < List{Time} < Vector .
   ---Operation definition:

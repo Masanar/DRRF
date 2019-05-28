@@ -1,4 +1,3 @@
-load Rules-Base-Application.maude
 load Market.maude
 load IoT-server.maude
 --- You can define the comunication for multi-step atack ie the comunication to the app market
@@ -13,7 +12,6 @@ load IoT-server.maude
 --- the Producer name have to be N and th Consumer name have to be N+1. And the other objects in the configuration have to
 --- avoid this names!
 
-
 mod MULTI-STEP-ATACK is
   inc CONFIGURATION .  pr CONVERSION .
   pr CONSUMER . pr PRODUCER . pr VECTOR . pr RULES .
@@ -25,7 +23,8 @@ mod MULTI-STEP-ATACK is
   op acces-market         :  Nat Vector      ->  Msg        [format(n! o)].
 
   vars N T  FR END PR CS MI SE LT : Nat .  var Con : Configuration . var ATS ATS' : AttributeSet .
-  vars L L' : List{Nat} .  var TS  CL : Vector . var QS QS' : List{String} . var B : Bool .
+  vars L L' : List{Nat} .
+  var TS  CL : Vector . var QS QS' : List{String} . var B : Bool .
 
   crl [app-request]:
    { < PR : Producer | ATS , cnt-prod: N ,frequency: FR , clock-p: TS, end: END >

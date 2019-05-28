@@ -1,59 +1,55 @@
 mod LTL is
-  pr STRING . pr RULES  . pr MULTI-STEP-ATACK .
+  pr CONFIGURATION .
   sorts Pred Ltl .
   subsorts Bool < Pred < Ltl .
-  op _|-_           : Sys  Ltl         -> Bool .
-  op O_             : Ltl             -> Ltl [ctor] .
-  op []_            : Ltl             -> Ltl [ctor] .
-  op E_             : Ltl             -> Ltl [ctor] .
-  op heredity       : Ltl Ltl         -> Ltl .
-  op _Msg-From_     : Nat Nat   -> Pred .
-  op _Causality_    : Nat Nat   -> Pred .
-  op Payload-D      : Nat       -> Pred .
-  op Scanning-D     : Nat       -> Pred .
-  op Injection-D    : Nat       -> Pred .
-  ---The range of operation verification could be another as Bool or Pred
-  op verification   : Ltl  Configuration          -> Ltl  .
-  var Con : Configuration . var ATS : AttributeSet . vars N T RC SE CS : Nat .
-  var PR : Pred . vars LT LT' LT'' : Ltl . var BO : Bool .
-  var VC : Vector .
-  ---
-  ---
-  ---El predicado es mas interesante si se valida el mensaje en la configuracion
-  ---en vez de cuando ya esta consumido
-  eq {  < RC : Consumer | ATS , current-mesg: Unordered-mesg(SE,N,T,VC) > Con } |- (RC Msg-From SE) = true .
-  eq ( { Con } |- (RC Msg-From SE) ) = false  [owise] .
+  --- ops true false : -> Ltl [ctor format (g o)] .
+  op ~_ : Ltl -> Ltl [ctor prec 53 format (r o d)] .
+  op _/\_ : Ltl Ltl -> Ltl [comm ctor gather (E e) prec 55 format (d r o d)] .
+  op _\/_ : Ltl Ltl -> Ltl [comm ctor gather (E e) prec 59 format (d r o d)] .
+  op _->_ : Ltl Ltl -> Ltl [gather (e E) prec 65 format (d r o d)] .
+  op _<->_ : Ltl Ltl -> Ltl [prec 65 format (d r o d)] .
+  op O_ : Ltl -> Ltl [ctor prec 53 format (r o d)] .
+  op E_ : Ltl -> Ltl [prec 53 format (r o d)] .
+  op []_ : Ltl -> Ltl [prec 53 format (r d o d)] .
 
-  --- Causality detection over Consumers
-  ceq { < RC : Consumer | ATS , clock-c: VC > Con } |- (RC Causality SE) = true
-    if ic(VC,SE) > 0 .
-  ceq { < RC : Consumer | ATS , clock-c: VC > Con } |- (RC Causality SE) = false
-    if ic(VC,SE) == 0 [owise] .
+  vars f g : Ltl .
+  --- eq true = true .
+  --- eq false = false .
+  eq true /\ f = f .
+  eq false /\ f = false .
+  eq true \/ f = true .
+  eq false \/ f = f .
+  eq ~ true = false .
+  eq ~ false = true .
+  eq ~ ~ f = f .
+  eq ~ (f \/ g) = ~ f /\ ~ g .
+  eq ~ (f /\ g) = ~ f \/ ~ g .
+  eq ~ O f = O ~ f .
+  eq f -> g = (~ f )\/ g .
+  --- eq true -> false = false .
+  eq f <-> g = (f -> g) /\ (g -> f) .
 
-  --- --- Causality detection over Producers
-  --- ceq { < SE : Producer | ATS , clock-p: VC > Con } |- (SE Causality RC) = true
-  ---   if ic(VC,SE) > 0 .
-  --- ceq { < SE : Producer | ATS , clock-p: VC > Con } |- (SE Causality RC) = false
-  ---   if ic(VC,SE) == 0 [owise] .
 
-  --- Payload detection
-  eq { Payload(CS) Con } |- (Payload-D(CS)) = true  .
-  eq {Con } |- (Payload-D(CS)) = false [owise] .
+  op heredity       : Ltl Ltl                    -> Ltl .
+  op verification   : Ltl Configuration          -> Ltl  .
+  var Con : Configuration .  vars LT LT' LT'' : Ltl .
+  var PR : Pred .
 
-  --- Scannig detection
-  eq { Scanning(CS,100100) Con } |- (Scanning-D(CS)) = true  .
-  eq {Con } |- (Scanning-D(CS)) = false [owise] .
+  eq verification(true,Con) = true .
+  eq verification(false,Con) = false .
 
-  --- Injection detection
-  eq { Injection(CS,SE) Con } |- (Injection-D(SE)) = true  .
-  eq {Con } |- (Injection-D(CS)) = false [owise] .
+  eq verification(~ LT,Con) = ~ verification(LT,Con) .
 
-  ---
-  ---
-  --- Semantics for basic cases
-  eq verification(BO,Con) = BO .
-  eq verification(PR,Con) = {Con} |- PR .
-  --- Semantics for =
+  --- eq verification(false /\ LT , Con) = false .
+  --- eq verification(true /\ LT, Con ) = verification(LT,Con) .
+  eq verification(LT /\ LT',Con) = verification(LT,Con) /\ verification(LT',Con) .
+
+  --- eq verification(true \/ LT , Con) = true .
+  --- eq verification(false \/ LT, Con ) = verification(LT,Con) .
+  eq verification(LT \/ LT',Con) = verification(LT,Con) \/ verification(LT',Con) .
+
+
+  --- --- Semantics for =
   eq verification(O(LT),Con) = LT .
   --- Sematica para []O
   --- ojo por que estoy perdiendo infromacion de la configuracion
@@ -73,14 +69,5 @@ mod LTL is
      then true
      else E(LT)
      fi .
-  --- Propositional  logic extention for usual operations in LTL
-   eq true and LT = LT .
-   eq false and LT = false .
-   eq LT and LT = LT .
-   eq false xor LT = LT .
-   eq LT xor LT = false .
-   eq LT and (LT' xor LT'') = LT and LT' xor LT and LT'' .
-   eq not LT = LT xor true .
-   eq LT or LT' = LT and LT' xor LT xor LT' .
-   eq LT implies LT' = not(LT xor LT and LT') .
+
 endm
