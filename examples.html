@@ -21,19 +21,19 @@
           <!-- <h2>In this series of examples we show how to use Maude and the diferents modules intoduces by DRRF</h2> -->
           <h2>Base Application Behavior</h2>
           <br>
-          The file <code>Base-Application.maude</code> contains the modulo <code>RULES</code> whos define the dynamic behavior of a distributed reactive base appilcation, we can do the following to enter it:
+          The file <code>Base-Application.maude</code> contains the module <code>RULES</code> whos define the dynamic behavior of a distributed reactive base appilcation, we can do the following to load it into Maude:
           <pre> <code>
-maude> load Base-Application.maude
+            maude> load Base-Application.maude
           </code> </pre>
-          After entering the module <code>RULES</code> into Maude, we can, for example, define a simple environment: there are two Producer-Observables and three Consumer-Observables that issue data flow to the system.
+          After laod the module <code>RULES</code> into Maude, you can define a simple environment: In the next example there are two Producer-Observables and three Consumer-Observables that issue data flow to the system.
           <pre> <code>
- < 0 : Producer | cnt-prod: 0,frequency: 1,clock-p: (0 0 0 0 0),weights: 5,end: 4,finish: false,Notice-logs: nil >
- < 1 : Producer | cnt-prod: 0,frequency: 3,clock-p: (0 0 0 0 0),weights: 1,end: 3,finish: false,Notice-logs: nil >
- < 2 : Consumer | current-mesg: none,freq-C: 2,actual-time: 0,logs: nil,limit: 34, clock-c:(0 0 0 0 0) >
- < 3 : Consumer | current-mesg: none,freq-C: 1,actual-time: 0,logs: nil,limit: 30, clock-c:(0 0 0 0 0) >
- < 4 : Consumer | current-mesg: none,freq-C: 5,actual-time: 0,logs: nil,limit: 55, clock-c:(0 0 0 0 0) >
+    < 0 : Producer | cnt-prod: 0,frequency: 1,clock-p: (0 0 0 0 0),weights: 5,end: 4,finish: false,Notice-logs: nil >
+    < 1 : Producer | cnt-prod: 0,frequency: 3,clock-p: (0 0 0 0 0),weights: 1,end: 3,finish: false,Notice-logs: nil >
+    < 2 : Consumer | current-mesg: none,freq-C: 2,actual-time: 0,logs: nil,limit: 34, clock-c:(0 0 0 0 0) >
+    < 3 : Consumer | current-mesg: none,freq-C: 1,actual-time: 0,logs: nil,limit: 30, clock-c:(0 0 0 0 0) >
+    < 4 : Consumer | current-mesg: none,freq-C: 5,actual-time: 0,logs: nil,limit: 55, clock-c:(0 0 0 0 0) >
           </code> </pre>
-          This example is commented on at the end of the file, you can eliminate the <code>---</code> then when you load the file Maude is going to use <code>rew</code> command to explore the behavior of the above example, keep in mind that each different execution may result in a different result. The result present information about the total rewrites that Maude did and the result of that possible trace i.e an application of consecutive rewriting rules.
+          This example is commented at the end of the file, you can eliminate the <code>---</code>. Thereby when file is loading  Maude is going to use <code>rew</code> command to explore the behavior of the above example, keep in mind that each different execution may result in a different result. The result present information about the total rewrites that Maude did and the result of that possible trace i.e an application of consecutive rewriting rules.
           <pre> <code>
 rewrite in RULES :
 {
@@ -62,9 +62,6 @@ result Sys:
 
   < 4 : Consumer | current-mesg: none,freq-C: 5,actual-time: 0,logs: | 0 ; 3 ; 5 |,limit: 55,clock-c: (9 0 3 1 56) >
 }
-
-
-
           </code> </pre>
           This rewrite example shows a possible execution for the system presented above, as you can see the producer fished its execution and the attributte <code> Notice-logs</code> of each producer gives information about that and the Consumers consume different amount of messages due to its different initial configurations. Note that at this point we only load the base behavior of the reactive base application without observers, the system only issue data flows between the different  observables. If you want to test a particular configuration you can change the configuration of the initial state of the system and reload the module.
         </article>
