@@ -58,17 +58,29 @@
           <p>DRRF framework is composed of several Maude modules that model the dynamic behavior of a distributed reactive system.</p>
           <br>
           <ul>
-            <li><code>Base-Application.maude</code>: specify the behavior of an environment where the observables issue data flow toward the system.</li>
-            <li><code>Observers.maude</code>: formal model for a distributed observer that watches the data flow issue by an observable.</li>
-            <li><code>Temporal-logic.maude</code>: formal model for LTL formulas.</li>
-            <li><code>Predicates.maude</code>: specify LTL predicates.</li>
-            <li><code>Vector.maude</code>: specify vector clocks using in the system.</li>
+            <li><code>Base-Application.maude</code>: Specify the behavior of an environment where the observables issue data flow toward the system.</li>
+            <li><code>Observers.maude</code>: Formal model for a distributed observer that watches the data flow issue by an observable.</li>
+            <li><code>Temporal-logic.maude</code>: Formal model for LTL formulas.</li>
+            <li><code>Predicates.maude</code>: Specify LTL predicates.</li>
+            <li><code>Vector.maude</code>: Specify vector clocks using in the system.</li>
           </ul>
           <a href="#">Download</a>
         </article>
+
+        <article>
+          <h2>Consumers</h2>
+          <br>
+          <p>DRRF framework model defines two types of observables: Producers and Consumers. These observables are used to simulate the base application behavior. In this way, the Producers issue messages to the system and  Consumers read those messages.
+          </p>
+          <br>
+          <p>
+            There are several attributes that allow the consumers definition. For example, Producers and Consumers have attribute <code>frequency</code> that model the frequency that the Producer issue a message and at frequency which the Consumer read, this attribute is invariant throughout the execution. Consumers have attributes for recording message issue and message consuption for Producers(<code>logs</code>) and Consumers(<code>Notice-logs</code>) correspondingly.
+          </p>
+          <br>
+
+        </article>
+
       </section>
-
-
     </section>
     <footer>
       <p>
