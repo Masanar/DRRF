@@ -24,13 +24,13 @@
           </p>
           <br>
           <p>
-            Model distributed systems using Maude is a  straightforward task. They are model as entities, loosely coupled by some suitable communication mechanism. Maude provies a predefined module <code> CONFIGURATION</code> that declares sorts representing the essential concepts of object, message, along with a notation for object syntax. In this  framework  the entities are objects, each with a unique identity, and the communication mechanism is message passing using broadcast or unicast protocols.
+            Model distributed systems using Maude is a  straightforward task. They are modeled as entities, loosely coupled by some suitable communication mechanism. Maude provies a predefined module <code> CONFIGURATION</code> that declares sorts representing the essential concepts of object, attributes, message, along with a notation for object syntax. In this  framework  the entities are objects, each with a unique identity, and the communication mechanism is message passing using broadcast or unicast protocols.
           </p>
           <br>
           <p>
             The framework uses rewriting logic and includes a model of the distributed base application, a model of observables and observers, and a model for complex predicate constructs supporting explicit time manipulation.
           </p>
-
+          <br>
           <h3>A review on Reactive Programming: Funtional Rective Programminge vs Rective programming </h3>
           <br>
           <!-- <p>DRRF framework is composed of differents Maude modules that model the dynamic behavior of a distributed reactive system. Thereby there are modules like Consumer-Base-Application, Producers-Base-Application, and Rules-Base-Application that specify the behavior of an environment where the observables issue data flow toward the system. Likewise, the module System-check-Base-Application introduces a formal model for a distributed observer that watches the data flow issue by an observable. Those observers watch data flow behavior and react to specific constraints model by LTL formulas that are model at module Temporal-Logic-Basic-Application.</p> -->
@@ -76,10 +76,10 @@
         </article>
 
         <article>
-          <h2>Consumers</h2>
+          <h2>Observables</h2>
           <br>
           <p>
-            DRRF framework model defines two types of observables: Producers and Consumers. These observables are use to simulate the base application behavior. In this way, the Producers issue messages to the system and  Consumers read those messages.
+            DRRF framework  defines two types of observables: Producers and Consumers. These observables are use to simulate the base application behavior. In this way, the Producers issue messages to the system and  Consumers read those messages.
           </p>
           <br>
           <p>
@@ -87,13 +87,14 @@
           </p>
           <br>
           <p>
-            As we mentioned above we use the module <code>CONFIGURATION </code> aiming to  define the particular objects, messages, and rules for interaction that are of interest. Thus, a part of the definition to Producers is the follow:
+            As we mentioned above we use the module <code>CONFIGURATION </code> aiming to  define the particular objects, messages, and rules for interaction that are of interest. Thus, part of the definition to Producers is the follow:
           </p>
           <br>
           <br>
           <pre><code>
             mod PRODUCER is
               pro CONFIGURATION .
+              subsort Nat < Oid .
               op Producer      :                     -> Cid      .
               op prod-finish   :  Nat                -> Msg      .
               op Unordered-mesg:  Nat Nat Nat Vector -> Msg      .
@@ -109,9 +110,13 @@
           </code></pre>
           <br>
           <p>
-            The module <code>PRODUCERS</code>  defines the attributes for any type of Producer object. Hence, there are attributes of type Bool as <code>finish</code>
+            The module <code>PRODUCERS</code>  defines the attributes for any type of Producer object. Hence, there are attributes of type Bool as <code>finish</code> that report the state of the Producer, if it is True the Producer is allowed to send a message and if it is False it can not issue messages. Likewise, the attribute <code>clock-p</code> stores the vector clock associated with that Producer. Besides, object identifiers <code>Oid</code> are defined as natural numbers. Diferent object identifiers relate diferent observables. In this way, the follow is the sintax for a Producer that has issued 1 message and which issue frequency is 3  ( i.e each three ticks of his clock he is aveleble to issue a message), each message issue by this Producer has a weight of 2 ( i.e the Consumer who reads those message would take 2 tick to consume it) and his list of notice logs is empty (At the momment the Producer has not received  the notice of ...) :
           </p>
-
+          <br>
+          <pre><code>
+            < 0 : Producer | cnt-prod: 1,frequency: 3,clock-p: (5 0 1 0 0),weights: 2,end: 4,finish: false,Notice-logs: nil >              
+          </code></pre>
+          <br>
         </article>
 
       </section>
