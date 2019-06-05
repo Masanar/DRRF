@@ -20,11 +20,11 @@
           <h2>DRRF</h2>
           <br>
           <p>
-            We study the semantics of distributed reactive programming languages using rewriting logic. We propose a reactive event-based programming framework with explicit support for distribution, concurrency, and explicit time manipulation <i>DRRF</i> which was developed on <i>Maude</i>.
+            We study the semantics of distributed reactive programming languages using rewriting logic. We propose a reactive event-based programming framework with explicit support for distribution, concurrency, and explicit time manipulation <i>DRRF</i> which has been developed on <i>Maude</i>.
           </p>
           <br>
           <p>
-            Model distributed systems using Maude is a  straightforward task. They are model as entities, loosely coupled by some suitable communication mechanism. In this  framework  the entities are objects, each with a unique identity, and the communication mechanism is message passing using broadcast or unicast protocols.
+            Model distributed systems using Maude is a  straightforward task. They are model as entities, loosely coupled by some suitable communication mechanism. Maude provies a predefined module <code> CONFIGURATION</code> that declares sorts representing the essential concepts of object, message, along with a notation for object syntax. In this  framework  the entities are objects, each with a unique identity, and the communication mechanism is message passing using broadcast or unicast protocols.
           </p>
           <br>
           <p>
@@ -86,6 +86,31 @@
             There are several attributes that allow the consumers definition. For example, Producers and Consumers have attribute <code>frequency</code> that model at which frequency the Producer issue a message and at frequency which the Consumer read, this attribute is invariant throughout the execution. Consumers have attributes for recording message issue and message consuption for Producers(<code>logs</code>) and Consumers(<code>Notice-logs</code>) correspondingly.
           </p>
           <br>
+          <p>
+            As we mentioned above we use the module <code>CONFIGURATION </code> aiming to  define the particular objects, messages, and rules for interaction that are of interest. Thus, a part of the definition to Producers is the follow:
+          </p>
+          <br>
+          <br>
+          <pre><code>
+            mod PRODUCER is
+              pro CONFIGURATION .
+              op Producer      :                     -> Cid      .
+              op prod-finish   :  Nat                -> Msg      .
+              op Unordered-mesg:  Nat Nat Nat Vector -> Msg      .
+              op clock-p:_     :  Vector             -> Attribute .
+              op finish:_      :  Bool               -> Attribute .
+              op cnt-prod:_    :  Nat                -> Attribute .
+              op frequency:_   :  Nat                -> Attribute .
+              op weights:_     :  Nat                -> Attribute .
+              op end:_         :  Nat                -> Attribute .
+              op Notice-logs:_ :  List{4Tuple}       -> Attribute .
+              ...
+            endm
+          </code></pre>
+          <br>
+          <p>
+            The module <code>PRODUCERS</code>  defines the attributes for any type of Producer object. Hence, there are attributes of type Bool as <code>finish</code>
+          </p>
 
         </article>
 
