@@ -19,12 +19,20 @@
         <article>
           <h2>DRRF</h2>
           <br>
-          <p> We study the semantics of distributed reactive programming languages using rewriting logic. We propose a reactive event-based programming framework with explicit support for distribution, concurrency, and explicit time manipulation <i>DRRF</i> which was developed on <i>Maude</i>. The framework uses rewriting logic and includes a model of the distributed base application, a model of observables and observers, and a model for complex predicate constructs supporting explicit time manipulation.
-          <h3>A review on Reactive Programming:
-             Funtional Rective Programminge vs Rective programminge </h3>
-
+          <p>
+            We study the semantics of distributed reactive programming languages using rewriting logic. We propose a reactive event-based programming framework with explicit support for distribution, concurrency, and explicit time manipulation <i>DRRF</i> which was developed on <i>Maude</i>.
           </p>
-                <br>
+          <br>
+          <p>
+            Model distributed systems using Maude is a  straightforward task. They are model as entities, loosely coupled by some suitable communication mechanism. In this  framework  the entities are objects, each with a unique identity, and the communication mechanism is message passing using broadcast or unicast protocols.
+          </p>
+          <br>
+          <p>
+            The framework uses rewriting logic and includes a model of the distributed base application, a model of observables and observers, and a model for complex predicate constructs supporting explicit time manipulation.
+          </p>
+
+          <h3>A review on Reactive Programming: Funtional Rective Programminge vs Rective programming </h3>
+          <br>
           <!-- <p>DRRF framework is composed of differents Maude modules that model the dynamic behavior of a distributed reactive system. Thereby there are modules like Consumer-Base-Application, Producers-Base-Application, and Rules-Base-Application that specify the behavior of an environment where the observables issue data flow toward the system. Likewise, the module System-check-Base-Application introduces a formal model for a distributed observer that watches the data flow issue by an observable. Those observers watch data flow behavior and react to specific constraints model by LTL formulas that are model at module Temporal-Logic-Basic-Application.</p> -->
           <!-- La imagen que va en este lugar muestra la organizacionde los diferente modulos, mejorar la del paper -->
           <!-- <img src="html/imagenes/prueba.jpg" border="1" alt="Este es el ejemplo de un texto alternativo" width="400" height="300"> -->
@@ -55,7 +63,7 @@
         <article>
           <h2>Modules</h2>
           <br>
-          <p>DRRF framework is composed of several Maude modules that model the dynamic behavior of a distributed reactive system.</p>
+          <p>DRRF framework is composed of several Maude modules thatj model the dynamic behavior of a distributed reactive system.</p>
           <br>
           <ul>
             <li><code>Base-Application.maude</code>: Specify the behavior of an environment where the observables issue data flow toward the system.</li>
@@ -70,11 +78,12 @@
         <article>
           <h2>Consumers</h2>
           <br>
-          <p>DRRF framework model defines two types of observables: Producers and Consumers. These observables are used to simulate the base application behavior. In this way, the Producers issue messages to the system and  Consumers read those messages.
+          <p>
+            DRRF framework model defines two types of observables: Producers and Consumers. These observables are use to simulate the base application behavior. In this way, the Producers issue messages to the system and  Consumers read those messages.
           </p>
           <br>
           <p>
-            There are several attributes that allow the consumers definition. For example, Producers and Consumers have attribute <code>frequency</code> that model the frequency that the Producer issue a message and at frequency which the Consumer read, this attribute is invariant throughout the execution. Consumers have attributes for recording message issue and message consuption for Producers(<code>logs</code>) and Consumers(<code>Notice-logs</code>) correspondingly.
+            There are several attributes that allow the consumers definition. For example, Producers and Consumers have attribute <code>frequency</code> that model at which frequency the Producer issue a message and at frequency which the Consumer read, this attribute is invariant throughout the execution. Consumers have attributes for recording message issue and message consuption for Producers(<code>logs</code>) and Consumers(<code>Notice-logs</code>) correspondingly.
           </p>
           <br>
 
