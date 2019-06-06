@@ -24,7 +24,7 @@
           </p>
           <br>
           <p>
-            Model distributed systems using Maude is a  straightforward task. They are modeled as entities, loosely coupled by some suitable communication mechanism. Maude provies a predefined module <code> CONFIGURATION</code> that declares sorts representing the essential concepts of object, attributes, message, along with a notation for object syntax. In this  framework  the entities are objects, each with a unique identity, and the communication mechanism is message passing using broadcast or unicast protocols.
+            Model distributed systems using Maude is a  straightforward task. They are modeled as entities, loosely coupled by some suitable communication mechanism. Maude provies a predefined module <code> CONFIGURATION</code> that declares sorts representing the essential concepts of object, attributes, message, along with a notation for object syntax. A configuration,base application, is a set of objects (Consumers & Producers) and messages that represents a snapshot of a possible system state. In this  framework  the entities are objects, each with a unique identity, and the communication mechanism is message passing using broadcast or unicast protocols.
           </p>
           <br>
           <p>
@@ -49,7 +49,7 @@
             <li><code>Predicates.maude</code>: Specify LTL predicates.</li>
             <li><code>Vector.maude</code>: Specify vector clocks using in the system.</li>
           </ul>
-          <a href="#">Download</a>
+          <a href="https://github.com/Masanar/DRRF">Download</a>
         </article>
 
         <article>
@@ -75,7 +75,6 @@
               subsort Nat < Oid .
               op Producer      :                     -> Cid      .
               op prod-finish   :  Nat                -> Msg      .
-              op Unordered-mesg:  Nat Nat Nat Vector -> Msg      .
               op clock-p:_     :  Vector             -> Attribute .
               op finish:_      :  Bool               -> Attribute .
               op cnt-prod:_    :  Nat                -> Attribute .
@@ -107,7 +106,6 @@
             mod CONSUMER is
               ...
               op Consumer             :                         ->  Cid      .
-              op Notice-mesg          :  Nat Nat Nat Vector     ->  Msg      .
               op current-mesg:_       :  Msg             ->  Attribute  .
               op clock-c:_            :  Vector          ->  Attribute  .
               op freq-C:_             :  Nat             ->  Attribute  .
@@ -140,6 +138,55 @@
           </code></pre>
           <br>
           <h2>Observables: messages </h2>
+          <br>
+          <p>
+             Maude also supports simple asynchronous message passing and complex patterns of synchronous interaction that can be used to model higher-level communication abstractions. For this propose we define in module <code>PRODUCER</code> the message <code>Unordered-mesg</code> who is the message that supports the communication between Producers and Consumers. In the same way, the message <code>Notice-mesg</code> is defined in module <code>CONSUMER</code> this type of message allows Consumer to notify the Producer that his message was consumed.
+          </p>
+          <br>
+          <pre><code>
+            mod PRODUCER is
+              ...
+              op Unordered-mesg:  Nat Nat Nat Vector -> Msg.
+              ...
+            endm
+
+
+            mod CONSUMER is
+              ...
+              op Notice-mesg:     Nat Nat Nat Vector  ->  Msg.
+              ...
+            endm
+
+          </code></pre>
+          <br>
+          <p>
+            Therefore a snapshot of a system that has two Producers and three Consumers, as the previous example, but one the Producer has issued two message. One of those messages has been read by one Consumer and the other message has not been consumed. Can be model as follow:
+          </p>
+
+          <br>
+          <pre><code>
+            < 0 : Producer | cnt-prod: 0,frequency: 1,clock-p: (0 0 0 0 0),weights: 5,end: 4,finish: false,Notice-logs: nil >
+            < 1 : Producer | cnt-prod: 0,frequency: 3,clock-p: (0 0 0 0 0),weights: 1,end: 3,finish: false,Notice-logs: nil >
+            < 2 : Consumer | current-mesg: none,freq-C: 2,actual-time: 0,logs: nil,limit: 34, clock-c:(0 0 0 0 0) >
+            < 3 : Consumer | current-mesg: none,freq-C: 1,actual-time: 0,logs: nil,limit: 30, clock-c:(0 0 0 0 0) >
+            < 4 : Consumer | current-mesg: none,freq-C: 5,actual-time: 0,logs: nil,limit: 55, clock-c:(0 0 0 0 0) >
+          </code></pre>
+          <br>
+
+          <p>
+            Notice that Unordered message have several elements, for example the <code>M</code> in the above example :
+          </p>
+          <br>
+          <p>
+            <ul>
+              <li><code>Base-Application.maude</code>: Specify the behavior of an environment where the observables issue data flow toward the system.</li>
+              <li><code>Observers.maude</code>: Formal model for a distributed observer that watches the data flow issue by an observable.</li>
+              <li><code>Temporal-logic.maude</code>: Formal model for LTL formulas.</li>
+              <li><code>Predicates.maude</code>: Specify LTL predicates.</li>
+              <li><code>Vector.maude</code>: Specify vector clocks using in the system.</li>
+            </ul>
+          </p>
+
 
         </article>
 
