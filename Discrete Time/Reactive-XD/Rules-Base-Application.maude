@@ -177,7 +177,7 @@ mod RULES is
      Unordered-mesg(PR,N,T,TS)  Con }
   if FR divides ic(TS,PR) /\ (END > N) /\ (ic(TS,PR) =/= 0)
   .
-  
+
   crl [Consumer-msg]:
     { Unordered-mesg(PR,N,T,TS)
      < CS : Consumer | ATS , current-mesg: none , freq-C: FR , clock-c: CL, limit: LT >  Con }
@@ -219,7 +219,7 @@ mod RULES is
 
 endm
 --- search [1,50]
-rewrite
+rewrite[4]
   {
 --- < 0 : Producer | cnt-prod: 0,frequency: 1,clock-p: (0),weights: 5,end: 10,finish: false,Notice-logs: nil >
 --- --- < 0 : Producer | cnt-prod: 0,frequency: 1,clock-p: (0 0 0 0 0),weights: 5,end: 10,finish: false,Notice-logs: nil >
