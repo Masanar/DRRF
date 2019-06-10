@@ -24,7 +24,7 @@
           </p>
           <br>
           <p>
-            Model distributed systems using Maude is a  straightforward task. They are modeled as entities, loosely coupled by some suitable communication mechanism. Maude provies a predefined module <code> CONFIGURATION</code> that declares sorts representing the essential concepts of object, attributes, message, along with a notation for object syntax. A configuration,base application, is a set of objects (Consumers & Producers) and messages that represents a snapshot of a possible system state. In this  framework  the entities are objects, each with a unique identity, and the communication mechanism is message passing using broadcast or unicast protocols.
+            Model distributed systems using Maude is a  straightforward task. They are modeled as entities, loosely coupled by some suitable communication mechanism. Maude provides a predefined module <code> CONFIGURATION</code> that declares sorts representing the essential concepts of object, attributes, message, along with a notation for object syntax. A configuration, base application, is a set of objects (Consumers & Producers) and messages that represent a snapshot of a possible system state. In this  framework, the entities are objects, each with a unique identity, and the communication mechanism is message passing using broadcast or unicast protocols.
           </p>
           <br>
           <p>
@@ -40,7 +40,6 @@
         <article>
           <h2>Modules</h2>
           <br>
-          <p>DRRF framework is composed of several Maude modules thatj model the dynamic behavior of a distributed reactive system.</p>
           <br>
           <ul>
             <li><code>Base-Application.maude</code>: Specify the behavior of an environment where the observables issue data flow toward the system.</li>
@@ -56,15 +55,15 @@
           <h2>Observables: Producers and Consumers </h2>
           <br>
           <p>
-            DRRF framework  defines two types of observables: Producers and Consumers. These observables are use to simulate the base application behavior. In this way, the Producers issue messages to the system and  Consumers read those messages.
+            DRRF framework  defines two types of observables: Producers and Consumers. These observables are used to simulate the base application behavior. In this way, the Producers issue messages to the system and  Consumers read those messages.
           </p>
           <br>
           <p>
-            There are several attributes that allow the consumers definition. For example, Producers and Consumers have attribute <code>frequency</code> that model at which frequency the Producer issue a message and at frequency which the Consumer read, this attribute is invariant throughout the execution. Consumers have attributes for recording message issue and message consuption for Producers(<code>logs</code>) and Consumers(<code>Notice-logs</code>) correspondingly.
+            There are several attributes that allow the consumers definition. For example, Producers and Consumers have attribute <code>frequency</code> that model at which frequency the Producer issue a message and at a frequency which the Consumer read, this attribute is invariant throughout the execution. Consumers have attributes for recording message issue and message consumption for Producers(<code>logs</code>) and Consumers(<code>Notice-logs</code>) correspondingly.
           </p>
           <br>
           <p>
-            As we mentioned above we use the module <code>CONFIGURATION </code> aiming to  define the particular objects, messages, and rules for interaction that are of interest. Thus, part of the definition to Producers is the follow:
+            As we mentioned above we use the module <code>CONFIGURATION </code> aiming to  define the particular objects, messages, and rules for interaction that are of interest. Thus, part of the definition of Producers is the following:
           </p>
           <br>
           <br>
@@ -87,7 +86,7 @@
           </code></pre>
           <br>
           <p>
-            The module <code>PRODUCERS</code>  defines the attributes for any type of Producer object. Hence, there are attributes of type Bool as <code>finish</code> that report the state of the Producer, if it is True the Producer is allowed to send a message and if it is False it can not issue messages. Likewise, the attribute <code>clock-p</code> stores the vector clock associated with that Producer. Besides, object identifiers <code>Oid</code> are defined as natural numbers. Diferent object identifiers relate diferent observables.
+            The module <code>PRODUCERS</code>  defines the attributes for any type of Producer object. Hence, there are attributes of type Bool as <code>finish</code> that report the state of the Producer, if it is True the Producer is allowed to send a message and if it is False it can not issue messages. Likewise, the attribute <code>clock-p</code> stores the vector clock associated with that Producer. Besides, object identifiers <code>Oid</code> are defined as natural numbers. Different object identifiers relate to different observables.
           </p>
           <br>
           <p>
@@ -99,13 +98,12 @@
           </code></pre>
           <br>
           <p>
-            Furthermore, the syntax for Consumer is almots the same. The different is the attribute definition, which is modeled in module <code>CONSUMER</code>.
+            Furthermore, the syntax for Consumer is almost the same. The difference is the attribute definition, which is modeled in module <code>CONSUMER</code>.
           </p>
           <br>
           <pre><code>
             mod CONSUMER is
               ...
-              op Consumer             :                         ->  Cid      .
               op current-mesg:_       :  Msg             ->  Attribute  .
               op clock-c:_            :  Vector          ->  Attribute  .
               op freq-C:_             :  Nat             ->  Attribute  .
@@ -126,7 +124,7 @@
           </code></pre>
           <br>
           <p>
-            Notice that the dimension of the vector clock associated with each observer depends on the size of the entire base application. In this specification we an associate each Observable identification to his correspondent position in the clock thus observer 0 is associate whit position 0 in the vector clock, for more detail see the module <code>VECTOR</code>. In this way, a complex base application whit several observables, two Producers and four Consumers must have five dimensions and is modeling as follow:
+            Notice that the dimension of the vector clock associated with each observer depends on the size of the entire base application. In this specification, we associate each Observable identification to his correspondent position in the clock thus observer 0 is associate whit position 0 in the vector clock, for more detail see the module <code>VECTOR</code>. In this way, a complex base application whit several observables, two Producers and four Consumers must have five dimensions and is modeling as follow:
           </p>
           <br>
           <pre><code>
@@ -199,28 +197,147 @@
             </ul>
 
           <br>
-          <h2> Dynamic behaviors</h2>
+          <h2> Dynamic behavior</h2>
           <br>
           <p>
-            In Maude, we have specified the rules that represent the dynamic behavior of the base application.  Rules model concurrent  transitions that can take place in a system. If the pattern in the rule’s left hand side matches a fragment of the system state and the rule’s conditionis satisfied. In that case the rule can take place, and the matched fragment of the state is transformed into the corresponding instance of the right hand side. In this way, several rules are defined.
+            In Maude, we have specified the rules that represent the dynamic behavior of the base application.  Rules model concurrent  transitions that can take place in system. If the pattern in the rule’s left-hand side matches a fragment of the system state and the rule’s condition is satisfied. In that case, the rule can take place, and the matched fragment of the state is transformed into the corresponding instance of the right-hand side.   In this way, several rules are defined. Notice that several variables are used because rules only need to mention the attributes and objects strictly necessary for model of concurrent transitions. Thus, <code>ATS</code> refers to a variable of type <code> AttributeSet </code> and <code>Con</code> refers to a variable of type <code>Configuration</code>, the other variables are related to his correspondent attribute type.
           </p>
           <br>
-          <ul>
-            <li> <code>[update-time-Producer]</code> </li>
-            <li> <code>[update-time-Consumer]</code> </li>
-            <li> <code>[send-msg]</code> </li>
-            <li> <code>[Consumer-msg]</code> </li>
-            <li> <code>[Consumer-notice]</code> </li>
-            <li> <code>[Consuming-msg]</code> </li>
-            <li> <code>[end-msg]</code> </li>
-            <li> <code>[send-end]</code> </li>
-          </ul>
-          <br>
-        
+
+
           <details>
             <summary> <code>[update-time-Producer]</code> </summary>
-            <h2>Nombre del sujeto</h2>
+            <br>
+            <p>
+              This rule updates the individual internal vector clock of Producers. Using the <code>tick</code>  operation defined in module <code>VECTOR</code>; Furthermore, notice that this operation has two attributes <code>CL</code> the vector clock and <code>PR</code> the correspondent position in the vector clock associated with the specific Observable). This rule taking into account the restriction: The number of messages issued must  be less than the maximum level specified for each Productor (<code> CT'< END </code>).
+            </p>
+            <br>
+            <pre><code>
+              crl [update-time-Producer] :
+              { < PR : Producer | ATS ,  clock-p: CL , end: END , cnt-prod: CT' >  Con }
+              =>
+              { < PR : Producer | ATS ,  clock-p: tick(CL,PR)  , end: END , cnt-prod: CT'  >  Con }
+              if CT' < END
+              .
+            </code></pre>
+            <br>
           </details>
+
+          <details>
+            <summary> <code>[update-time-Consumer]</code> </summary>
+            <br>
+            <p>
+              This rule updates the individual internal vector clock of Consumers. Using the <code>tick</code>  operation defined in module <code>VECTOR</code>; Furthermore, notice that this operation has two attributes <code>CL</code> the vector clock and <code>PR</code> the correspondent position in the vector clock associated with the specific Observable). This rule taking into account the restriction: The individual clock must be less or equal than the maximum time specified for each Consumer (<code> ic(CL,PR) <= LT </code>).
+            </p>
+            <br>
+            <pre><code>
+              crl [update-time-Consumer] :
+              { < PR : Consumer | ATS , freq-C: FR , clock-c: CL , current-mesg: none ,  limit: LT >  Con }
+              =>
+              { < PR : Consumer | ATS , freq-C: FR , clock-c: tick(CL,PR) , current-mesg: none ,  limit: LT >  Con }
+              if ic(CL,PR) <= LT
+              .
+            </code></pre>
+            <br>
+          </details>
+
+          <details>
+            <summary> <code>[send-msg]</code> </summary>
+            <br>
+            <p>
+              This rule add (creates) a new element into the Configuration, message type object. This rule taking into account three restrictions:
+            </p>
+            <br>
+              <ul>
+                <li><code>FR divides ic(TS,PR)</code> The frequency allows send message.</li>
+                <li> <code>(END > N)</code> The amount of message production is less than the specific restriction for the Producer .
+                <li> <code>(ic(TS,PR) =/= 0)</code> The individual clock already started.
+              </ul>
+            <br>
+            <pre><code>
+              crl [send-msg]:
+               { < PR : Producer | ATS , cnt-prod: N , weights:  T  , frequency: FR , clock-p: TS, end: END >  Con }
+               =>
+               { < PR : Producer | ATS , cnt-prod: s(N) , weights: T , frequency: FR , clock-p: tick(TS,PR), end: END  >
+                 Unordered-mesg(PR,N,T,TS)  Con }
+              if FR divides ic(TS,PR) /\ (END > N) /\ (ic(TS,PR) =/= 0)
+              .
+            </code></pre>
+            <br>
+          </details>
+
+          <details>
+            <summary> <code>[Consumer-msg]</code> </summary>
+            <br>
+            <pre><code>
+              crl [Consumer-msg]:
+                { Unordered-mesg(PR,N,T,TS)
+                 < CS : Consumer | ATS , current-mesg: none , freq-C: FR , clock-c: CL, limit: LT >  Con }
+                =>
+                {< CS : Consumer | ATS , current-mesg: Unordered-mesg(PR,N,T,TS) , freq-C: FR , clock-c: tick(maxv(CL,TS),CS) , limit: LT  >
+                 Notice-mesg(N,CS,PR,tick(maxv(CL,TS),CS)) Con }
+               if (FR divides ic(CL,CS)) /\  ic(CL,CS) <= LT
+               .
+            </code></pre>
+            <br>
+          </details>
+
+          <details>
+            <summary> <code>[Consumer-notice]</code> </summary>
+            <br>
+            <pre><code>
+              { Notice-mesg(N,CS,PR,VC)
+               < PR : Producer | ATS ,clock-p: CL, Notice-logs: LP >  Con }
+              =>
+              {< PR : Producer | ATS ,clock-p: tick(maxv(CL,VC),PR),Notice-logs: ( LP  | N ; ic(CL,PR) ; CS ; ic(VC,CS) | )  >
+                Con }
+             .
+            </code></pre>
+            <br>
+          </details>
+
+          <details>
+            <summary> <code>[Consuming-msg]</code> </summary>
+            <br>
+            <pre><code>
+              crl [Consuming-msg]:
+               {< CS : Consumer | ATS , actual-time: T' , logs: QS , clock-c: CL ,current-mesg: Unordered-mesg(PR,N,T,TS) >  Con }
+               =>
+               {< CS : Consumer | ATS , actual-time: s(T') , logs: QS , clock-c: tick(CL,CS) ,current-mesg: Unordered-mesg(PR,N,T,TS) >  Con }
+              if  s(T') <= T
+              .
+            </code></pre>
+            <br>
+          </details>
+
+          <details>
+            <summary> <code>[end-msg]</code> </summary>
+            <br>
+            <pre><code>
+              crl [end-msg]:
+               {< CS : Consumer | ATS , actual-time: T' , clock-c: CL , logs: QS , current-mesg: Unordered-mesg(PR,N,T,TS) >  Con }
+               =>
+               {< CS : Consumer | ATS , actual-time: 0 , clock-c: tick(CL,CS) ,logs: (QS (| PR ; N ; T | ) )  , current-mesg: none >  Con }
+              if  T' = T
+              .
+            </code></pre>
+            <br>
+          </details>
+
+          <details>
+            <summary> <code>[send-end]</code> </summary>
+            <br>
+            <pre><code>
+              rl [send-end] :
+              { < PR : Producer | ATS ,  cnt-prod: END , end: END , finish: false >  Con }
+              =>
+              { < PR : Producer | ATS ,  cnt-prod: END , end: END , finish: true > prod-finish(PR) Con }
+              .
+            </code></pre>
+            <br>
+          </details>
+          <br>
+
         </article>
 
       </section>

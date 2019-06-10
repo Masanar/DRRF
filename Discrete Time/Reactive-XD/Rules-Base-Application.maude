@@ -187,34 +187,34 @@ mod RULES is
    if (FR divides ic(CL,CS)) /\  ic(CL,CS) <= LT
    .
 
-   --- (N,ic(CL,PR),CS,ic(VC,CS))
+   (N,ic(CL,PR),CS,ic(VC,CS))
 
-  ---  rl [Consumer-notice]:
-  ---   { Notice-mesg(N,CS,PR,VC)
-  ---    < PR : Producer | ATS ,clock-p: CL, Notice-logs: LP >  Con }
-  ---   =>
-  ---   {< PR : Producer | ATS ,clock-p: tick(maxv(CL,VC),PR),Notice-logs: ( LP  | N ; ic(CL,PR) ; CS ; ic(VC,CS) | )  >
-  ---     Con }
-  ---  .
-  --- crl [Consuming-msg]:
-  ---  {< CS : Consumer | ATS , actual-time: T' , logs: QS , clock-c: CL ,current-mesg: Unordered-mesg(PR,N,T,TS) >  Con }
-  ---  =>
-  ---  {< CS : Consumer | ATS , actual-time: s(T') , logs: QS , clock-c: tick(CL,CS) ,current-mesg: Unordered-mesg(PR,N,T,TS) >  Con }
-  --- if  s(T') <= T
-  --- .
-  ---
-  --- crl [end-msg]:
-  ---  {< CS : Consumer | ATS , actual-time: T' , clock-c: CL , logs: QS , current-mesg: Unordered-mesg(PR,N,T,TS) >  Con }
-  ---  =>
-  ---  {< CS : Consumer | ATS , actual-time: 0 , clock-c: tick(CL,CS) ,logs: (QS (| PR ; N ; T | ) )  , current-mesg: none >  Con }
-  --- if  T' = T
-  --- .
-  ---
-  --- rl [send-end] :
-  --- { < PR : Producer | ATS ,  cnt-prod: END , end: END , finish: false >  Con }
-  --- =>
-  --- { < PR : Producer | ATS ,  cnt-prod: END , end: END , finish: true > prod-finish(PR) Con }
-  --- .
+   rl [Consumer-notice]:
+    { Notice-mesg(N,CS,PR,VC)
+     < PR : Producer | ATS ,clock-p: CL, Notice-logs: LP >  Con }
+    =>
+    {< PR : Producer | ATS ,clock-p: tick(maxv(CL,VC),PR),Notice-logs: ( LP  | N ; ic(CL,PR) ; CS ; ic(VC,CS) | )  >
+      Con }
+   .
+  crl [Consuming-msg]:
+   {< CS : Consumer | ATS , actual-time: T' , logs: QS , clock-c: CL ,current-mesg: Unordered-mesg(PR,N,T,TS) >  Con }
+   =>
+   {< CS : Consumer | ATS , actual-time: s(T') , logs: QS , clock-c: tick(CL,CS) ,current-mesg: Unordered-mesg(PR,N,T,TS) >  Con }
+  if  s(T') <= T
+  .
+
+  crl [end-msg]:
+   {< CS : Consumer | ATS , actual-time: T' , clock-c: CL , logs: QS , current-mesg: Unordered-mesg(PR,N,T,TS) >  Con }
+   =>
+   {< CS : Consumer | ATS , actual-time: 0 , clock-c: tick(CL,CS) ,logs: (QS (| PR ; N ; T | ) )  , current-mesg: none >  Con }
+  if  T' = T
+  .
+
+  rl [send-end] :
+  { < PR : Producer | ATS ,  cnt-prod: END , end: END , finish: false >  Con }
+  =>
+  { < PR : Producer | ATS ,  cnt-prod: END , end: END , finish: true > prod-finish(PR) Con }
+  .
 
 
 endm
