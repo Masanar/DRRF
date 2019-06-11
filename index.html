@@ -365,8 +365,60 @@
           <h2>Observers</h2>
           <br>
           <p>
-            We use LTL operators to specify behavior in the reactive base application and the data flow throughout the execution system. The module <code>LTL</code>  defines the temporal logic operators as Maude operations. However, it is necessary to define the semantics of these operators
+            We use LTL operators to specify behavior in the reactive base application and the data flow throughout the execution system. The module <code>LTL</code>  defines the temporal logic operators as Maude operations.
           </p>
+          <br>
+          <pre><code>
+            mod LTL is
+              ...
+              op ~_ : Ltl -> Ltl [ctor prec 53 format (r o d)] .
+              op _/\_ : Ltl Ltl -> Ltl [comm ctor gather (E e) prec 55 format (d r o d)] .
+              op _\/_ : Ltl Ltl -> Ltl [comm ctor gather (E e) prec 59 format (d r o d)] .
+              op _->_ : Ltl Ltl -> Ltl [gather (e E) prec 65 format (d r o d)] .
+              op _<->_ : Ltl Ltl -> Ltl [prec 65 format (d r o d)] .
+              op O_ : Ltl -> Ltl [ctor prec 53 format (r o d)] .
+              op E_ : Ltl -> Ltl [prec 53 format (r o d)] .
+              op []_ : Ltl -> Ltl [prec 53 format (r d o d)] .
+              ...
+            endm
+          </code></pre>
+          <br>
+          <p>
+            However, it is necessary to define the semantics of these operators
+          </p>
+          <br>
+          <pre><code>
+            op heredity       : Ltl Ltl                    -> Ltl .
+            op verification   : Ltl Configuration          -> Ltl  .
+            var Con : Configuration .
+            vars LT LT' LT'' : Ltl .
+            var PR : Pred .
+          </code></pre>
+          <br>
+          <pre> <code>
+            eq verification(true,Con) = true .
+            eq verification(false,Con) = false .
+            eq verification(~ LT,Con) = ~ verification(LT,Con) .
+            eq verification(LT /\ LT',Con) = verification(LT,Con) /\ verification(LT',Con) .
+            eq verification(LT \/ LT',Con) = verification(LT,Con) \/ verification(LT',Con) .
+          </code> </pre>
+          <br>
+          <pre> <code>
+            eq verification(O(LT),Con) = LT .
+            eq verification([](O(LT)),Con) = heredity([](O(LT)),LT) .
+            eq verification(heredity(LT,LT'),Con) = if (verification(LT',Con) == false)
+               then false
+               else heredity(LT,LT')
+               fi .
+            eq verification([](LT),Con) = if (verification(LT,Con) == false)
+               then false
+               else [](LT)
+               fi .
+            eq verification(E(LT),Con) = if verification((LT),Con)
+               then true
+               else E(LT)
+               fi .
+          </code> </pre>
           <br>
         </article>
 
