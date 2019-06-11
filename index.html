@@ -31,8 +31,8 @@
             The framework uses rewriting logic and includes a model of the distributed base application, a model of observables and observers, and a model for complex predicate constructs supporting explicit time manipulation.
           </p>
           <br>
-          <h3>A review on Reactive Programming: Funtional Rective Programminge vs Rective programming </h3>
-          <br>
+          <!-- <h3>A review on Reactive Programming: Funtional Rective Programminge vs Rective programming </h3>
+          <br> -->
           <!-- <p>DRRF framework is composed of differents Maude modules that model the dynamic behavior of a distributed reactive system. Thereby there are modules like Consumer-Base-Application, Producers-Base-Application, and Rules-Base-Application that specify the behavior of an environment where the observables issue data flow toward the system. Likewise, the module System-check-Base-Application introduces a formal model for a distributed observer that watches the data flow issue by an observable. Those observers watch data flow behavior and react to specific constraints model by LTL formulas that are model at module Temporal-Logic-Basic-Application.</p> -->
           <!-- La imagen que va en este lugar muestra la organizacionde los diferente modulos, mejorar la del paper -->
           <!-- <img src="html/imagenes/prueba.jpg" border="1" alt="Este es el ejemplo de un texto alternativo" width="400" height="300"> -->
@@ -270,6 +270,10 @@
           <details>
             <summary> <code>[Consumer-msg]</code> </summary>
             <br>
+            <p>
+              This rule model the message consumption for Consumers. Notice that pattern in the rule shows that message consumption implies tick the clock and read the message (i.e eliminate the message from Configuration and store at attribute <code>current-mesg</code>).
+            </p>
+            <br>
             <pre><code>
               crl [Consumer-msg]:
                 { Unordered-mesg(PR,N,T,TS)
@@ -286,19 +290,28 @@
           <details>
             <summary> <code>[Consumer-notice]</code> </summary>
             <br>
+            <p>
+              Perceive that pattern in this rule shows that notice message consumption for Producers implies tick the clock and record the notice logs. The <code>Notice-logs</code> is a list of <code>|N;ic(CL,PR);CS;ic(VC,CS)|</code> elements that allows get information of which Consumer <code>CS</code> read which message <code>N</code> at which time <code>ic(VC,CS)</code> additionally at which time the Producer read the notice message <code>ic(CL,PR)</code>.
+            </p>
+            <br>
             <pre><code>
-              { Notice-mesg(N,CS,PR,VC)
-               < PR : Producer | ATS ,clock-p: CL, Notice-logs: LP >  Con }
-              =>
-              {< PR : Producer | ATS ,clock-p: tick(maxv(CL,VC),PR),Notice-logs: ( LP  | N ; ic(CL,PR) ; CS ; ic(VC,CS) | )  >
-                Con }
-             .
+              rl [Consumer-notice]:
+               { Notice-mesg(N,CS,PR,VC)
+                < PR : Producer | ATS ,clock-p: CL, Notice-logs: LP >  Con }
+               =>
+               {< PR : Producer | ATS ,clock-p: tick(maxv(CL,VC),PR),Notice-logs: ( LP  | N ; ic(CL,PR) ; CS ; ic(VC,CS) | )  >
+                 Con }
+              .
             </code></pre>
             <br>
           </details>
 
           <details>
             <summary> <code>[Consuming-msg]</code> </summary>
+            <br>
+            <p>
+              The consumption of a message storing into a Consumer is done through the time, taking into account the message's weight <code>T</code>. Thus, the attribute <code>actual-time</code> is a counter that identifies how long the message has been consumed, each rule application implies a tick in the clock as well as a tick in this counter.
+            </p>
             <br>
             <pre><code>
               crl [Consuming-msg]:
@@ -314,6 +327,10 @@
           <details>
             <summary> <code>[end-msg]</code> </summary>
             <br>
+            <p>
+              Notice that pattern in this rule shows that end of consumption message implies tick the clock and record the message logs. The <code>logs</code> attribute is a list of <code>|PR;N;T|</code> elements that allows get information of which Producer <code>PR</code> issue which message <code>N</code> as well as the weight of it <code>T</code>.
+            </p>
+            <br>
             <pre><code>
               crl [end-msg]:
                {< CS : Consumer | ATS , actual-time: T' , clock-c: CL , logs: QS , current-mesg: Unordered-mesg(PR,N,T,TS) >  Con }
@@ -328,6 +345,10 @@
           <details>
             <summary> <code>[send-end]</code> </summary>
             <br>
+            <p>
+              This rule issue a message <code>prod-finish(PR)</code> when the producer reaches the limit of messages that it can be issued.
+            </p>
+            <br>
             <pre><code>
               rl [send-end] :
               { < PR : Producer | ATS ,  cnt-prod: END , end: END , finish: false >  Con }
@@ -339,6 +360,15 @@
           </details>
           <br>
 
+        </article>
+
+        <article>
+          <h2>Observers</h2>
+          <br>
+          <p>
+            We use LTL operators to specify behavior in the reactive base application and the data flow throughout the execution system. The module <code>LTL</code>  defines the temporal logic operators as Maude operations. However, it is necessary to define the semantics of these operators 
+          </p>
+          <br>
         </article>
 
       </section>
