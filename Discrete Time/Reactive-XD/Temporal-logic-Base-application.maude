@@ -13,8 +13,6 @@ mod LTL is
   op []_ : Ltl -> Ltl [prec 53 format (r d o d)] .
 
   vars f g : Ltl .
-  --- eq true = true .
-  --- eq false = false .
   eq true /\ f = f .
   eq false /\ f = false .
   eq true \/ f = true .
@@ -26,7 +24,6 @@ mod LTL is
   eq ~ (f /\ g) = ~ f \/ ~ g .
   eq ~ O f = O ~ f .
   eq f -> g = (~ f )\/ g .
-  --- eq true -> false = false .
   eq f <-> g = (f -> g) /\ (g -> f) .
 
 
@@ -47,6 +44,7 @@ mod LTL is
   --- eq verification(true \/ LT , Con) = true .
   --- eq verification(false \/ LT, Con ) = verification(LT,Con) .
   eq verification(LT \/ LT',Con) = verification(LT,Con) \/ verification(LT',Con) .
+  eq verification(LT -> LT',Con) = verification(LT,Con) -> verification(LT',Con) .
 
 
   --- --- Semantics for =
