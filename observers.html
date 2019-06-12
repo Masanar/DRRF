@@ -24,85 +24,90 @@
               <h2>Observers</h2>
               <br>
               <p>
-                We use LTL operators to specify behavior in the base application and the data flow throughout the execution system. The module <code>LTL</code>  defines the temporal logic operators as Maude operations. Notice that LTL operators are defined as operations whit domain is <code>LTL</code> and whic range is <code>LTL</code> (i.e they received LTL formulas and produce new LTL formulas).
-
+                We use LTL operators to specify behavior, the data flow throughout the execution system and constraints in the base application. The module <code>LTL</code>  defines the temporal logic operators as Maude operations. Notice that LTL operators are defined as operations whit domain is <code>LTL</code> and which range is <code>LTL</code> (i.e they received LTL formulas and produce new LTL formulas).
               </p>
               <br>
-              <details>
-                <summary> <code>~_</code> Logical complement. </summary>
-                <br>
-                <pre><code>
-      op ~_ : Ltl -> Ltl [ctor prec 53 format (r o d)] .
-                </code></pre>
-                <br>
-              </details>
+              <section>
 
-              <details>
-                <summary> <code>_/\_</code> Logical conjunction. </summary>
-                <br>
-                <pre><code>
-      op _/\_ : Ltl Ltl -> Ltl [comm ctor gather (E e) prec 55 format (d r o d)] .
+                <details>
+                  <summary> <code>~_</code> Logical complement. </summary>
+                  <br>
+                  <pre><code>
+        op ~_ : Ltl -> Ltl [ctor prec 53 format (r o d)] .
+                  </code></pre>
+                  <br>
+                </details>
 
-                </code></pre>
-                <br>
-              </details>
+                <details>
+                  <summary> <code>_/\_</code> Logical conjunction. </summary>
+                  <br>
+                  <pre><code>
+        op _/\_ : Ltl Ltl -> Ltl [comm ctor gather (E e) prec 55 format (d r o d)] .
 
-              <details>
-                <summary> <code>_\/_</code> Logical disjunction. </summary>
-                <br>
-                <pre><code>
-      op _\/_ : Ltl Ltl -> Ltl [comm ctor gather (E e) prec 59 format (d r o d)] .
-                </code></pre>
-                <br>
-              </details>
+                  </code></pre>
+                  <br>
+                </details>
 
-              <details>
-                <summary> <code>_->_</code>Logical implication. </summary>
-                <br>
-                <pre><code>
-      op _->_ : Ltl Ltl -> Ltl [gather (e E) prec 65 format (d r o d)] .
-                </code></pre>
-                <br>
-              </details>
+                <details>
+                  <summary> <code>_\/_</code> Logical disjunction. </summary>
+                  <br>
+                  <pre><code>
+        op _\/_ : Ltl Ltl -> Ltl [comm ctor gather (E e) prec 59 format (d r o d)] .
+                  </code></pre>
+                  <br>
+                </details>
 
-              <details>
-                <summary> <code>_<->_</code>Logical equivalence. </summary>
-                <br>
-                <pre><code>
-      op _<->_ : Ltl Ltl -> Ltl [prec 65 format (d r o d)] .
-                </code></pre>
-                <br>
-              </details>
+                <details>
+                  <summary> <code>_->_</code>Logical implication. </summary>
+                  <br>
+                  <pre><code>
+        op _->_ : Ltl Ltl -> Ltl [gather (e E) prec 65 format (d r o d)] .
+                  </code></pre>
+                  <br>
+                </details>
 
-              <details>
-                <summary> <code>O_</code> Temporal operator next. </summary>
-                <br>
-                <pre><code>
-      op O_ : Ltl -> Ltl [ctor prec 53 format (r o d)] .
-                </code></pre>
-                <br>
-              </details>
+                <details>
+                  <summary> <code>_<->_</code>Logical equivalence. </summary>
+                  <br>
+                  <pre><code>
+        op _<->_ : Ltl Ltl -> Ltl [prec 65 format (d r o d)] .
+                  </code></pre>
+                  <br>
+                </details>
 
-              <details>
-                <summary> <code>E_</code> Temporal operator eventually. </summary>
-                <br>
-                <pre><code>
-      op E_ : Ltl -> Ltl [prec 53 format (r o d)] .
-                </code></pre>
-                <br>
-              </details>
+                <details>
+                  <summary> <code>O_</code> Temporal operator next. </summary>
+                  <br>
+                  <pre><code>
+        op O_ : Ltl -> Ltl [ctor prec 53 format (r o d)] .
+                  </code></pre>
+                  <br>
+                </details>
 
-              <details>
-                <summary> <code>[]_</code> Temporal operator globally. </summary>
-                <br>
-                <pre><code>
-      op []_ : Ltl -> Ltl [prec 53 format (r d o d)] .
-                </code></pre>
-                <br>
-              </details>
+                <details>
+                  <summary> <code>E_</code> Temporal operator eventually. </summary>
+                  <br>
+                  <pre><code>
+        op E_ : Ltl -> Ltl [prec 53 format (r o d)] .
+                  </code></pre>
+                  <br>
+                </details>
+
+                <details>
+                  <summary> <code>[]_</code> Temporal operator globally. </summary>
+                  <br>
+                  <pre><code>
+        op []_ : Ltl -> Ltl [prec 53 format (r d o d)] .
+                  </code></pre>
+                  <br>
+                </details>
+
+              </section>
               <br>
               <p>
-                However, it is necessary to define the semantics of these operators
+                However, it is necessary to define the semantics of these operators (for a breaf introduction to Temporal Logic you can read <a href="https://onlinelibrary.wiley.com/doi/book/10.1002/9781119991472">Fisher</a>). Note the following example 
+
+                For this reason the operations <code>heredity</code> and <code>verification</code> were  defined
               </p>
               <br>
               <pre><code>
@@ -120,7 +125,7 @@
       eq verification(LT /\ LT',Con) = verification(LT,Con) /\ verification(LT',Con) .
       eq verification(LT \/ LT',Con) = verification(LT,Con) \/ verification(LT',Con) .
       eq verification(LT -> LT',Con) = verification(LT,Con) -> verification(LT',Con) .
-      
+
               </code> </pre>
               <br>
               <pre> <code>
