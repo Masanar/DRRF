@@ -21,6 +21,33 @@
         <section class="main">
           <section class="articles">
             <article>
+              <h2>A Brief Review on Temporal Logic Models </h2>
+              <br>
+              <p>
+                However, it is necessary to define the semantics of these operators, for a breaf introduction to Temporal Logic you can see <a href="https://onlinelibrary.wiley.com/doi/book/10.1002/9781119991472">Fisher</a>. Note the following finite model of time for  the ‘next in the future’ operator, <code>0</code>, provides us with the ability to represent properties that are true at the next moments in time.
+              </p>
+                <br>
+                <img src="next.png" alt="model of time for the ‘always in the future’ operator" style="max-width: 75%;"  class="center" />
+                <br>
+              <p>
+                Analogous, the following finite model of time for  the ‘eventually in the future’ operator, <code>E</code>, provides us with the ability to represent properties that are true at the some point in time from now.
+              </p>
+                <img src="eventually.png" alt="model of time for the ‘always in the future’ operator" style="max-width: 75%;" class="center" />
+                <br>
+              <p>
+                Alike, the following finite model of time for  the ‘always in the future’ operator, <code>[]</code>, provides us with the ability to represent properties that are true at all moments in time from now on.
+              </p>
+                <img src="always.png" alt="model of time for the ‘always in the future’ operator" style="max-width: 75%;" class="center" />
+                <br>
+              <p>
+                Likewise, there are different patterns (combinations of a temporal operator) that are remarkable, take a look at the following models:
+For this reason the operations <code>heredity</code> and <code>verification</code> were  defined
+              </p>
+              <br>
+              <img src="remarkable1.png" alt="model of time for the ‘always in the future’ operator" style="max-width: 75%;" class="center" />
+              <br>
+              <img src="remarkable2.png" alt="model of time for the ‘always in the future’ operator" style="max-width: 75%;" class="center" />
+              <br>
               <h2>Observers</h2>
               <br>
               <p>
@@ -104,15 +131,8 @@
 
               </section>
               <br>
-              <p>
-                However, it is necessary to define the semantics of these operators, for a breaf introduction to Temporal Logic you can see <a href="https://onlinelibrary.wiley.com/doi/book/10.1002/9781119991472">Fisher</a>. Note the following finite model of time for  the ‘always in the future’ operator, <code>[]</code>, provides us with the ability to represent properties that are true at all moments in time from now on.
-                <br>
-                <img src="always.png" alt="model of time for the ‘always in the future’ operator" style="max-width: 100%;" />
-                <i>GRAFICA PARA LOS TRES OPERADORES Y AL FINAL EL CASO ESPECIAL DE []O</i>
-                <br>
-                For this reason the operations <code>heredity</code> and <code>verification</code> were  defined
-              </p>
-              <br>
+              
+
               <pre><code>
       op heredity       : Ltl Ltl                    -> Ltl .
       op verification   : Ltl Configuration          -> Ltl  .
