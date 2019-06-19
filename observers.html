@@ -24,29 +24,33 @@
               <h2>A Brief Review on Temporal Logic Models </h2>
               <br>
               <p>
-                However, it is necessary to define the semantics of these operators, for a breaf introduction to Temporal Logic you can see <a href="https://onlinelibrary.wiley.com/doi/book/10.1002/9781119991472">Fisher</a>. Note the following finite model of time for  the ‘next in the future’ operator, <code>0</code>, provides us with the ability to represent properties that are true at the next moments in time.
+                We need to define the semantics of the LTL operators. In this way, we show a brief review of LTL semantics, for a deep introduction to Temporal Logic you can see <a href="https://onlinelibrary.wiley.com/doi/book/10.1002/9781119991472">Fisher</a>. The following finite model of time for  the  <strong>next in the future</strong>  operator. This operator provide us the ability to represent properties that will be true at the next moment, from the moment when the next operator was evaluated.
               </p>
                 <br>
                 <img src="next.png" alt="model of time for the ‘always in the future’ operator" style="max-width: 75%;"  class="center" />
                 <br>
               <p>
-                Analogous, the following finite model of time for  the ‘eventually in the future’ operator, <code>E</code>, provides us with the ability to represent properties that are true at the some point in time from now.
+                Analogous, the following finite model of time for  the <strong>eventually in the future</strong>  operator, let us represent properties that are true at the some point in time from now. We know that they will be true, but we do not know when they will be.
               </p>
                 <img src="eventually.png" alt="model of time for the ‘always in the future’ operator" style="max-width: 75%;" class="center" />
                 <br>
               <p>
-                Alike, the following finite model of time for  the ‘always in the future’ operator, <code>[]</code>, provides us with the ability to represent properties that are true at all moments in time from now on.
+                Alike, the following finite model of time for  the <strong>always in the future</strong>. This operator give us the control to represent properties that are true at all moments in time from now on.
               </p>
                 <img src="always.png" alt="model of time for the ‘always in the future’ operator" style="max-width: 75%;" class="center" />
                 <br>
               <p>
                 Likewise, there are different patterns (combinations of a temporal operator) that are remarkable, take a look at the following models:
-For this reason the operations <code>heredity</code> and <code>verification</code> were  defined
+
               </p>
               <br>
               <img src="remarkable1.png" alt="model of time for the ‘always in the future’ operator" style="max-width: 75%;" class="center" />
               <br>
               <img src="remarkable2.png" alt="model of time for the ‘always in the future’ operator" style="max-width: 75%;" class="center" />
+              <br>
+              <p>
+                Those are behaviors that we have to take into account because a naive implementation of those patterns will become in a bad interpretation of LTL semantics. The evaluation of the first formula &#x25A1;(&Omicron;&Phi;) implies that at every moment (after the evaluation)  &Omicron;&Phi; must be true. This means that &Phi; must be true after the second moment when the whole formula was evaluated. The evaluation of the second formula &#x25C7;(&Omicron;&gamma;) implies that after the moment when the formula has evaluated there is a moment where the formula  must be true. That is to say, the formula &gamma; must be true after the second moment since the whole formula has been evaluated. For this reason the operations <code>heredity</code>.
+              </p>
               <br>
               <h2>Observers</h2>
               <br>
@@ -131,7 +135,12 @@ For this reason the operations <code>heredity</code> and <code>verification</cod
 
               </section>
               <br>
-              
+              <p>
+                As we mentionted above, we defined the semantics of LTL formulas whit the opertaion <code> heredity</code> and <code> verification</code> this operation  RECUR the structure (syntax tree) of the LTL formula up to the base cases: Predicates and constants. The operation <code>verification</code> has two argumments the LTL formula and the configuration where the formula want to be evaluated, notice that different configuration generate different results for the same formula.
+              </p>
+
+              <br>
+
 
               <pre><code>
       op heredity       : Ltl Ltl                    -> Ltl .
@@ -139,9 +148,6 @@ For this reason the operations <code>heredity</code> and <code>verification</cod
       var Con : Configuration .
       vars LT LT' LT'' : Ltl .
       var PR : Pred .
-              </code></pre>
-              <br>
-              <pre> <code>
       eq verification(true,Con) = true .
       eq verification(false,Con) = false .
       eq verification(~ LT,Con) = ~ verification(LT,Con) .
