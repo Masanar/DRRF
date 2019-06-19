@@ -52,7 +52,7 @@
                 Those are behaviors that we have to take into account because a naive implementation of those patterns will become in a bad interpretation of LTL semantics. The evaluation of the first formula &#x25A1;(&Omicron;&Phi;) implies that at every moment (after the evaluation)  &Omicron;&Phi; must be true. This means that &Phi; must be true after the second moment when the whole formula was evaluated. The evaluation of the second formula &#x25C7;(&Omicron;&gamma;) implies that after the moment when the formula has evaluated there is a moment where the formula  must be true. That is to say, the formula &gamma; must be true after the second moment since the whole formula has been evaluated. For this reason the operations <code>heredity</code>.
               </p>
               <br>
-              <h2>Observers</h2>
+              <h2>LTL Semantics</h2>
               <br>
               <p>
                 We use LTL operators to specify behavior, the data flow throughout the execution system and constraints in the base application. The module <code>LTL</code>  defines the temporal logic operators as Maude operations. Notice that LTL operators are defined as operations whit domain is <code>LTL</code> and which range is <code>LTL</code> (i.e they received LTL formulas and produce new LTL formulas).
@@ -136,7 +136,7 @@
               </section>
               <br>
               <p>
-                As we mentionted above, we defined the semantics of LTL formulas whit the opertaion <code> heredity</code> and <code> verification</code> this operation  RECUR the structure (syntax tree) of the LTL formula up to the base cases: Predicates and constants. The operation <code>verification</code> has two argumments the LTL formula and the configuration where the formula want to be evaluated, notice that different configuration generate different results for the same formula.
+                As we mentionted above, we defined the semantics of LTL formulas using the opertaion <code> heredity</code> and <code> verification</code>. This operation  recur over the structure (syntax tree) of the LTL formula up to the base cases: Predicates and Constants. Moreover, the propocitional logic semantics is defined as usal, for more deatail you can see the entire <code>Temporal-logic.maude</code> file . The operation <code>verification</code> has two argumments the LTL formula and the configuration where the formula want to be evaluated, notice that different configuration generate different results for the same formula.
               </p>
 
               <br>
@@ -157,13 +157,12 @@
 
               </code> </pre>
               <br>
+              <p>
+                The semantics for LTL operators is quite different, each time that a next operation needs to be evaluated
+              </p>
+              <br>
               <pre> <code>
       eq verification(O(LT),Con) = LT .
-      eq verification([](O(LT)),Con) = heredity([](O(LT)),LT) .
-      eq verification(heredity(LT,LT'),Con) = if (verification(LT',Con) == false)
-         then false
-         else heredity(LT,LT')
-         fi .
       eq verification([](LT),Con) = if (verification(LT,Con) == false)
          then false
          else [](LT)
@@ -171,6 +170,14 @@
       eq verification(E(LT),Con) = if verification((LT),Con)
          then true
          else E(LT)
+         fi .
+              </code> </pre>
+              <br>
+              <pre> <code>
+      eq verification([](O(LT)),Con) = heredity([](O(LT)),LT) .
+      eq verification(heredity(LT,LT'),Con) = if (verification(LT',Con) == false)
+         then false
+         else heredity(LT,LT')
          fi .
               </code> </pre>
               <br>
