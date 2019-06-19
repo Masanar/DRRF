@@ -158,29 +158,43 @@
               </code> </pre>
               <br>
               <p>
-                The semantics for LTL operators is quite different, each time that a next operation needs to be evaluated
+                The semantics for LTL operators is quite different. Each time that a next operation is evaluated &Omicron;&gamma;, the formula is  changed to  &gamma; in this way the next moment the formula that must be evaluated &gamma;. Each time that a eventually operator is evaluated &#x25C7;&gamma; the value of the fomula &gamma; is verified, if it is true &#x25C7;&gamma; is evaluted as ture and if it is false the formula no change in order to be evaluated at the next moment. Finally, evaluate a &#x25A1;&gamma; formula implies evaluate the formula &gamma; if it is false &#x25A1;&gamma; is evaluted as false   if it is true the formula no change in order to be evaluated at the next moment.
               </p>
               <br>
               <pre> <code>
+      eq verification(E(LT),Con) = if verification((LT),Con)
+         then true
+         else E(LT)
+         fi .
       eq verification(O(LT),Con) = LT .
       eq verification([](LT),Con) = if (verification(LT,Con) == false)
          then false
          else [](LT)
          fi .
-      eq verification(E(LT),Con) = if verification((LT),Con)
-         then true
-         else E(LT)
-         fi .
               </code> </pre>
               <br>
+              <p>
+                All the more, as is mention above, the semantics for the remarkable patterns is taking into account, in this way we define the operation <code>heredity</code>. For the pattern &#x25A1;(&Omicron;&gamma;) the first argument keeps the information of the formula while the second argument keeps the formula &Omicron;&gamma; to be evaluated at the next moment. For the other remarkable pattern, the operation <code>heredity</code> works in the same way.
+              </p>
+              <br>
               <pre> <code>
-      eq verification([](O(LT)),Con) = heredity([](O(LT)),LT) .
+      eq verification([](O(LT)),Con) = heredity([](O(LT)),O(LT)) .
+      eq verification(heredity(LT,O(LT'))) = heredity(LT,LT') .
       eq verification(heredity(LT,LT'),Con) = if (verification(LT',Con) == false)
          then false
          else heredity(LT,LT')
          fi .
               </code> </pre>
               <br>
+            </article>
+            <article >
+              <h2>Observers</h2>
+              <br>
+              <p>
+                Module <code>SYSTEM-CHECK</code> defines observers of type checker. These Observers are defined with a LTL formula and are in charge of monitoring specific behaviors. The association of an observer with an observable system ( Consumer or a Producer) is made using the identifier of the objects, i.e., a checker and the observable it is associated to must have the same identifier (remember that in Muade the identity of and object depends of its type and its identifier). Additionally, monitors use LTL formulas aiming to look out the observable associated with it. Then, when the temporal formulas that the checker verifies are not fulfilled a reaction can be generated (if it was defined).
+              </p>
+              <br>
+              
             </article>
 
           </section>
