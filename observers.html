@@ -24,23 +24,23 @@
               <h2>A Brief Review on Temporal Logic Models </h2>
               <br>
               <p>
-                We need to define the semantics of the LTL operators. In this way, we show a brief review of LTL semantics, for a deep introduction to Temporal Logic you can see <a href="https://onlinelibrary.wiley.com/doi/book/10.1002/9781119991472">Fisher</a>. The following finite model of time for  the  <strong>next in the future</strong>  operator. This operator provide us the ability to represent properties that will be true at the next moment, from the moment when the next operator was evaluated.
+                We need to define the semantics of the LTL operators. In this way, we show a brief review of LTL semantics, for a deep introduction to Temporal Logic you can see <a href="https://onlinelibrary.wiley.com/doi/book/10.1002/9781119991472">Fisher</a>. The following finite model of time for  the  <strong>next in the future</strong>  operator. This operator provides us the ability to represent properties that will be true at the next moment, from the moment when the next operator was evaluated.
               </p>
                 <br>
                 <img src="next.png" alt="model of time for the ‘always in the future’ operator" style="max-width: 75%;"  class="center" />
                 <br>
               <p>
-                Analogous, the following finite model of time for  the <strong>eventually in the future</strong>  operator, let us represent properties that are true at the some point in time from now. We know that they will be true, but we do not know when they will be.
+                Analogous, the following finite model of time for  the <strong>eventually in the future</strong>  operator, let us represent properties that are true at some point in time from now. We know that they will be true, but we do not know when they will be.
               </p>
                 <img src="eventually.png" alt="model of time for the ‘always in the future’ operator" style="max-width: 75%;" class="center" />
                 <br>
               <p>
-                Alike, the following finite model of time for  the <strong>always in the future</strong>. This operator give us the control to represent properties that are true at all moments in time from now on.
+                Alike, the following finite model of time for  the <strong>always in the future</strong>. This operator gives us the control to represent properties that are true at all moments in time from now on.
               </p>
                 <img src="always.png" alt="model of time for the ‘always in the future’ operator" style="max-width: 75%;" class="center" />
                 <br>
               <p>
-                Likewise, there are different patterns (combinations of a temporal operator) that are remarkable, take a look at the following models:
+                Likewise, there are different patterns (combinations of  temporal operators) that are remarkable, take a look at the following models:
 
               </p>
               <br>
@@ -136,7 +136,7 @@
               </section>
               <br>
               <p>
-                As we mentionted above, we defined the semantics of LTL formulas using the opertaion <code> heredity</code> and <code> verification</code>. This operation  recur over the structure (syntax tree) of the LTL formula up to the base cases: Predicates and Constants. Moreover, the propocitional logic semantics is defined as usal, for more deatail you can see the entire <code>Temporal-logic.maude</code> file . The operation <code>verification</code> has two argumments the LTL formula and the configuration where the formula want to be evaluated, notice that different configuration generate different results for the same formula.
+                As we mentioned above, we defined the semantics of LTL formulas using the operation code> heredity</code> and <code> verification</code>. This operation recurs over the structure (syntax tree) of the LTL formula up to the base cases: Predicates and Constants. Moreover, the propositional logic semantics is defined as usual, for more detail you can see the entire <code>Temporal-logic.maude</code> file . The operation <code>verification</code> has two arguments the LTL formula and the configuration where the formula want to be evaluated, notice that different configuration generate different results for the same formula.
               </p>
 
               <br>
@@ -158,7 +158,8 @@
               </code> </pre>
               <br>
               <p>
-                The semantics for LTL operators is quite different. Each time that a next operation is evaluated &Omicron;&gamma;, the formula is  changed to  &gamma; in this way the next moment the formula that must be evaluated &gamma;. Each time that a eventually operator is evaluated &#x25C7;&gamma; the value of the fomula &gamma; is verified, if it is true &#x25C7;&gamma; is evaluted as ture and if it is false the formula no change in order to be evaluated at the next moment. Finally, evaluate a &#x25A1;&gamma; formula implies evaluate the formula &gamma; if it is false &#x25A1;&gamma; is evaluted as false   if it is true the formula no change in order to be evaluated at the next moment.
+                The semantics for LTL operators is quite different. Each time that a next operation is evaluated &Omicron;&gamma;, the formula is changed to  &gamma; in this way the next moment the formula that must be evaluated  &gamma;. Each time that an eventual operator is evaluated &#x25C7;&gamma;  the value of the formula &gamma; is verified, if it is true &#x25C7;&gamma;  is evaluated as true and if it is false the formula no change in order to be evaluated at the next moment. Finally, evaluate a &#x25A1;&gamma; formula implies to evaluate the formula &gamma; if it is false &#x25A1;&gamma; is evaluated as false if it is true the formula no change in order to be evaluated at the next moment.
+
               </p>
               <br>
               <pre> <code>
@@ -190,7 +191,7 @@
             <article>
               <h2>Predicates Definition</h2>
               <br>
-              <p>If you want to define new predicates for observers to monitor a specific behavior in the data flow, you have to modife the file <code>Predicate.maude</code> in this file you will find the syntaxis for predicate definition.
+              <p>If you want to define new predicates for observers to monitor a specific behavior in the data flow, you have to modify the file <code>Predicate.maude</code> in this file you will find the syntaxis for predicate definition.
               </p>
               <br>
               <pre> <code>
@@ -217,22 +218,22 @@
     endm
               </code> </pre>
               <p>
-                For example, the predicate <code> Causality </code> is defined by specifying in what state it is valid and any other state than this will be invalid(<code>owise</code>).
+                For example, the predicate <code> Causality </code> is defined by specifying in what state it is valid and any other state that this will be invalid(<code>owise</code>).
               </p>
             </article>
             <article >
               <h2>Observers: checkers</h2>
               <br>
               <p>
-                Module <code>SYSTEM-CHECK</code> defines observers of type checker. These Observers are defined with a LTL formula and are in charge of monitoring specific behaviors. The association of an observer with an observable system ( Consumer or a Producer) is made using the identifier of the objects, i.e., a checker and the observable it is associated to must have the same identifier (remember that in Muade the identity of and object depends of its type and its identifier). Additionally, monitors use LTL formulas aiming to look out the observable associated with it. Then, when the temporal formulas that the checker verifies are not fulfilled a reaction can be generated (if it was defined).
+                Module <code>SYSTEM-CHECK</code> defines observers of the type checker. These Observers are defined with an LTL formula and are in charge of monitoring specific behaviors. The association of an observer with an observable system ( Consumer or a Producer) is made using the identifier of the objects, i.e., a checker and the observable it is associated to must have the same identifier (remember that in Maude the identity of an object depends on its type and its identifier). Additionally, monitors use LTL formulas aiming to look out the observable associated with it. Then, when the temporal formulas that the checker verifies are not fulfilled a reaction can be generated (if it was defined).
               </p>
               <br>
               <p>
-                There are several attributes that allow the observer definition. For example, the attribute <code>formula</code> that saves the formula that the observer must verify trouhg the execution. Besides, the attributes <code> end-c</code> and <code>count</code> allow the finish of execution.
+                There are several attributes that allow the observer definition. For example, the attribute <code>formula</code> that saves the formula that the observer must verify through the execution. Besides, the attributes <code> end-c</code> and <code>count</code> the finish of execution.
               </p>
               <br>
               <p>
-                As we mentioned previusly we use the module <code>CONFIGURATION</code> aiming to  define the particular objects, messages, and rules for interaction that are of interest. Thus, part of the definition of Producers is the following:
+                As we mentioned previously we use the module <code>CONFIGURATION</code> aiming to define the particular objects, messages, and rules for interaction that are of interest. Thus, part of the definition of Producers is the following:
               </p>
               <br>            <br>
               <pre><code>
@@ -258,7 +259,7 @@
               <h2> Dynamic behavior</h2>
               <br>
               <p>
-                In Maude, we have specified the rules that represent the dynamic behavior.  Rules model concurrent  transitions that can take place in system. If the pattern in the rule’s left-hand side matches a fragment of the system state and the rule’s condition is satisfied. In that case, the rule can take place, and the matched fragment of the state is transformed into the corresponding instance of the right-hand side.   In this way, a rule is defined to model observer behavior. Notice that several variables are used because rules only need to mention the attributes and objects strictly necessary for model of concurrent transitions. Thus, <code>ATS</code> refers to a variable of type <code> AttributeSet </code> and <code>Con</code> refers to a variable of type <code>Configuration</code>, the other variables are related to his correspondent attribute type.
+                In Maude, we have specified the rules that represent dynamic behavior. Rules model concurrent transitions that can take place in the system. If the pattern in the rule’s left-hand side matches a fragment of the system state and the rule’s condition is satisfied. In that case, the rule can take place, and the matched fragment of the state is transformed into the corresponding instance of the right-hand side. In this way, a rule is defined to model observer behavior. Notice that several variables are used because rules only need to mention the attributes and objects strictly necessary for a model of concurrent transitions. Thus, <code>ATS</code> refers to a variable of type <code> AttributeSet </code> and <code>Con</code> refers to a variable of type <code>Configuration</code>, the other variables are related to his correspondent attribute type.
               </p>
               <br>
 
@@ -267,7 +268,7 @@
                 <summary> <code>[checker-Predicate]</code> </summary>
                 <br>
                 <p>
-                  Each time that this rule is done the checker verify the vality of formula saves in attribute <code>Formula</code> through the configuration at moment when the rule was applied, using the operation <code> verification</code> define above. Notice that this is a conditional rule then it can be aplicated only if the count is less or equal than the number difined at attribute <code>end-c</code>.
+                  Each time that this rule is done the checker verifies the validity of formula saves in attribute <code>Formula</code> through the configuration at the moment when the rule was applied, using the operation <code> verification</code> define above. Notice that this is a conditional rule then it can be replicated only if the count is less or equal than the number defined at attribute <code>end-c</code>.
                 </p>
                 <br>
                 <pre><code>

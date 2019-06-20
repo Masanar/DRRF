@@ -68,7 +68,7 @@
               </code></pre>
               <br>
               <p>
-                Furthermore, the syntax for Consumer is almost the same. The difference is the attribute definition, which is modeled in module <code>CONSUMER</code>.
+                Furthermore, the syntax for Consumer is almost the same. The difference is the definition of the attributes, which is modeled in module <code>CONSUMER</code>.
               </p>
               <br>
               <pre><code>
@@ -128,7 +128,7 @@
               </code></pre>
               <br>
               <p>
-                Therefore a snapshot of a system that has two Producers and three Consumers, as the previous example. But in this case, 0-Producer has sent one message. The message issued by 0-Producer has been consumed by 3-consumer and the Consumer reacting to this whit a notice. The syntax is the following:
+                Therefore a snapshot of a system that has two Producers and three Consumers, as the previous example. But in this case, 0-Producer has sent one message. The message issued by 0-Producer has been consumed by 3-consumer and the Consumer reacting to this whit a notice. The syntax example is the following:
               </p>
 
               <br>
@@ -151,12 +151,12 @@
                   <li> <code>0</code> is the identifier of the Producer that issued the message.
                   <li><code>1</code> is the number of the message.</li>
                   <li><code>5</code> is the weight of the message.</li>
-                  <li><code>4 0 0 0 0</code>is the snapshot of the Producer's clock when the message was issue.</li>
+                  <li><code>4 0 0 0 0</code>is the snapshot of the Producer's clock when the message was issued.</li>
                 </ul>
               </p>
               <br>
               <p>
-                Similarly the Notice message has similar elements. For example the <code>Notice-mesg(1, 3, 0, 4 0 0 1 0)</code> in the above example :
+                Similarly, the Notice message has identical elements. For example the <code>Notice-mesg(1, 3, 0, 4 0 0 1 0)</code> in the above example :
               </p>
               <br>
                 <ul>
@@ -170,7 +170,7 @@
               <h2> Dynamic behavior</h2>
               <br>
               <p>
-                In Maude, we have specified the rules that represent the dynamic behavior of the base application.  Rules model concurrent  transitions that can take place in system. If the pattern in the rule’s left-hand side matches a fragment of the system state and the rule’s condition is satisfied. In that case, the rule can take place, and the matched fragment of the state is transformed into the corresponding instance of the right-hand side.   In this way, several rules are defined. Notice that several variables are used because rules only need to mention the attributes and objects strictly necessary for model of concurrent transitions. Thus, <code>ATS</code> refers to a variable of type <code> AttributeSet </code> and <code>Con</code> refers to a variable of type <code>Configuration</code>, the other variables are related to his correspondent attribute type.
+                In Maude, we have specified the rules that represent the dynamic behavior of the base application.  Rules model concurrent  transitions that can take place in the system. If the pattern in the rule’s left-hand side matches a fragment of the system state and the rule’s condition is satisfied. In that case, the rule can take place, and the matched fragment of the state is transformed into the corresponding instance of the right-hand side.   In this way, several rules are defined. Notice that several variables are used because rules only need to mention the attributes and objects strictly necessary for model of concurrent transitions. Thus, <code>ATS</code> refers to a variable of type <code> AttributeSet </code> and <code>Con</code> refers to a variable of type <code>Configuration</code>, the other variables are related to his correspondent attribute type.
               </p>
               <br>
 

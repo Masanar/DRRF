@@ -24,10 +24,12 @@
           <h2>Prerequisites</h2>
           <br>
           <p>
-            The Maude system is free software, is a high-performance language which support both: equational and rewriting logic specification and is usefull to programming a wide range of applications. Maude System runs on Linux and Mac OS. Is available at the  <a href="http://maude.cs.illinois.edu/w/index.php/Maude_download_and_installation">Maude home Page</a>.
-
+            The Maude system is free software, is a high-performance language which supports both: equational and rewriting logic specification and is useful to programming a wide range of applications. Maude System runs on Linux and Mac OS. Is available at the <a href="http://maude.cs.illinois.edu/w/index.php/Maude_download_and_installation">Maude home Page</a>.
+          </p>
           <br>
-          <p>A Maude session can be started by calling the maude.linux64 binary in the Maude dictionary from the Linux shell window, the process is similar for Mac OS. For example, we can move to the dictionary and invoke Maude.</p>
+          <p>
+            A Maude session can be started by calling the maude.linux64 binary in the Maude dictionary from the Linux shell window, the process is similar for Mac OS. For example, we can move to the dictionary and invoke Maude.
+          </p>
           <br>
           <pre><code>
             ~/Maude-2.7.1-linux$ ./maude.linux64
@@ -41,7 +43,9 @@
           </code></pre>
           <br>
 
-          <p>At this point the Maude System is ready to accept Maude modules and commands. During the session, the user interacts with the system by entering a request at the Maude prompt</p>
+          <p>
+            At this point, the Maude System is ready to accept Maude modules and commands. During the session, the user interacts with the system by entering a request at the Maude prompt
+          </p>
         </article>
 
 
@@ -49,11 +53,18 @@
           <!-- <h2>In this series of examples we show how to use Maude and the diferents modules intoduces by DRRF</h2> -->
           <h2>Base Application Behavior</h2>
           <br>
-          The file <code>Base-Application.maude</code> contains the module <code>RULES</code> whos define the dynamic behavior of a distributed reactive base appilcation, we can do the following to load it into Maude:
+          <p>
+            The file <code>Base-Application.maude</code> contains the module <code>RULES</code> whos define the dynamic behavior of a distributed reactive base application, we can do the following to load it into Maude:
+          </p>
+          <br>
           <pre> <code>
             maude> load Base-Application.maude
           </code> </pre>
-          After laod the module <code>RULES</code> into Maude, you can define a simple environment: In the next example there are two Producer-Observables and three Consumer-Observables that issue data flow to the system.
+          <br>
+          <p>
+            After load the module <code>RULES</code> into Maude, you can define a simple environment: In the next example, there are two Producer-Observables and three Consumer-Observables that issue data flow to the system.
+          </p>
+          <br>
           <pre> <code>
     < 0 : Producer | cnt-prod: 0,frequency: 1,clock-p: (0 0 0 0 0),weights: 5,end: 4,finish: false,Notice-logs: nil >
     < 1 : Producer | cnt-prod: 0,frequency: 3,clock-p: (0 0 0 0 0),weights: 1,end: 3,finish: false,Notice-logs: nil >
@@ -61,7 +72,11 @@
     < 3 : Consumer | current-mesg: none,freq-C: 1,actual-time: 0,logs: nil,limit: 30, clock-c:(0 0 0 0 0) >
     < 4 : Consumer | current-mesg: none,freq-C: 5,actual-time: 0,logs: nil,limit: 55, clock-c:(0 0 0 0 0) >
           </code> </pre>
-          This example is commented at the end of the file, you can eliminate the <code>---</code>. Thereby when file is loading  Maude is going to use <code>rew</code> command to explore the behavior of the above example, keep in mind that each different execution may result in a different result. The result present information about the total rewrites that Maude did and the result of that possible trace i.e an application of consecutive rewriting rules.
+          <br>
+          <p>
+            This example is commented at the end of the file, you can eliminate the <code>---</code>. Thereby when the file is loading  Maude is going to use <code>rew</code> command to explore the behavior of the above example, keep in mind that each different execution may result in a different result. The result present information about the total rewrites that Maude did and the result of that possible trace i.e an application of consecutive rewriting rules.
+          </p>
+          <br>
           <pre> <code>
 rewrite in RULES :
 {
@@ -91,18 +106,23 @@ result Sys:
   < 4 : Consumer | current-mesg: none,freq-C: 5,actual-time: 0,logs: | 0 ; 3 ; 5 |,limit: 55,clock-c: (9 0 3 1 56) >
 }
           </code> </pre>
-          This rewrite example shows a possible execution for the system presented above, as you can see the producer fished its execution and the attributte <code> Notice-logs</code> of each producer gives information about that and the Consumers consume different amount of messages due to its different initial configurations. Note that at this point we only load the base behavior of the reactive base application without observers, the system only issue data flows between the different  observables. If you want to test a particular configuration you can change the configuration of the initial state of the system and reload the module.
+          This rewrite example shows a possible execution for the system presented above, as you can see the producer fished its execution and the attribute <code> Notice-logs</code> of each producer gives information about that and the Consumers consume different amount of messages due to its different initial configurations. Note that at this point we only load the base behavior of the reactive base application without observers, the system only issue data flows between the different  observables. If you want to test a particular configuration you can change the configuration of the initial state of the system and reload the module.
         </article>
         <article>
           <h2>Observer Behavior</h2>
           <br>
           <p>
-            The file Observers.maude contains the modulo <code>OBSERVER</code> whos define the dinamic behavior of distributed reactive observer over a base application, this module automatically loads the modules <code>Base-Application.maude </code> ,<code> Temporal-logic.maude </code> , <code>Predicates.maude</code> , we can do the following to enter it:
+            The file Observers.maude contains the modulo <code>OBSERVER</code> whos define the dynamic behavior of distributed reactive observer over a base application, this module automatically loads the modules <code>Base-Application.maude </code> ,<code> Temporal-logic.maude </code> and <code>Predicates.maude</code>. The following instruction enter it:
           </p>
+          <br>
           <pre> <code>
 maude> Observers.maude
           </code> </pre>
-             The example contained at this file introduces one of the most interesting commands of Maude <code>search</code> this command allows to explore the reachable state space, from an initial state. In this way, you can know which behavior would happen and which don't. In the example, we want to know if there is a state where LTL formula <code>(E Order 1 of 0)</code> verify by the <code>observer-1</code> is fulfilled.
+          <br>
+          <p>
+            The example contained at this file introduces one of the most interesting commands of Maude <code>search</code> this command allows to explore the reachable state space, from an initial state. In this way, you can know which behavior would happen and which don't. In the example, we want to know if there is a state where LTL formula <code>(E Order 1 of 0)</code> verify by the <code>observer-1</code> is fulfilled.
+          </p>
+          <br>
              <pre> <code>
 search in SYSTEM-CHECK :
   {< 1 : checker | Formula: (E Order 1 of 0),finish: false,end-c: 50,count: 0 >
@@ -132,7 +152,7 @@ search in SYSTEM-CHECK :
 
                </code> </pre>
         </article>
-        
+
       </section>
     </section>
     <footer>
