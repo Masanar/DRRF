@@ -132,38 +132,7 @@ search in SYSTEM-CHECK :
 
                </code> </pre>
         </article>
-        <article>
-          <h2>Predicates Definition</h2>
-          <br>
-          <p>If you want to define new predicates for observers to monitor a specific behavior in the data flow, you have to modife the file <code>Predicate.maude</code> in this file you will find the syntaxis for predicate definition.
-</p>
-          <pre> <code>
-
-mod PREDICATES is
-  pr STRING . pr RULES  .  including LTL .
-  --- pr MULTI-STEP-ATACK .
-  op _|-_           : Sys  Ltl  -> Ltl .
-  op partial-order  : Nat       -> Pred .
-  op _Causality_    : Nat Nat   -> Pred .
-  op Acces-market-D : Nat       -> Pred .
-  op App-download-D : Nat       -> Pred .
-  op Payload-D      : Nat       -> Pred .
-  op Scanning-D     : Nat       -> Pred .
-  op Injection-D    : Nat       -> Pred .
-  op Order_         : Nat       -> Pred .
-  op Order_of_ : Nat Nat -> Pred .
-  ...
-  --- Causality detection over Consumers
-  ceq { < RC : Consumer | ATS , clock-c: VC > Con } |- (RC Causality SE) = true
-    if ic(VC,SE) > 0 .
-  eq { Con } |- (RC Causality SE) = false   [owise] .
-  ...
-endm
-          </code> </pre>
-          <p>
-            For example, the predicate <code> Causality </code> is defined by specifying in what state it is valid and any other state than this will be invalid(<code>owise</code>).
-          </p>
-        </article>
+        
       </section>
     </section>
     <footer>

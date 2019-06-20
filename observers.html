@@ -11,7 +11,7 @@
           <li><a href="index.html">Overview</a></li>
           <li><a href="observables.html">Observables</a></li>
           <li><a href="#">Observers</a></li>
-          <li><a href="#">Examples</a></li>
+          <li><a href="examples.html">Examples</a></li>
 
           <!-- <li><a href="examples.html">Examples</a></li> -->
         </ul>
@@ -187,14 +187,101 @@
               </code> </pre>
               <br>
             </article>
+            <article>
+              <h2>Predicates Definition</h2>
+              <br>
+              <p>If you want to define new predicates for observers to monitor a specific behavior in the data flow, you have to modife the file <code>Predicate.maude</code> in this file you will find the syntaxis for predicate definition.
+              </p>
+              <br>
+              <pre> <code>
+
+    mod PREDICATES is
+      pr STRING . pr RULES  .  including LTL .
+      --- pr MULTI-STEP-ATACK .
+      op _|-_           : Sys  Ltl  -> Ltl .
+      op partial-order  : Nat       -> Pred .
+      op _Causality_    : Nat Nat   -> Pred .
+      op Acces-market-D : Nat       -> Pred .
+      op App-download-D : Nat       -> Pred .
+      op Payload-D      : Nat       -> Pred .
+      op Scanning-D     : Nat       -> Pred .
+      op Injection-D    : Nat       -> Pred .
+      op Order_         : Nat       -> Pred .
+      op Order_of_ : Nat Nat -> Pred .
+      ...
+      --- Causality detection over Consumers
+      ceq { < RC : Consumer | ATS , clock-c: VC > Con } |- (RC Causality SE) = true
+        if ic(VC,SE) > 0 .
+      eq { Con } |- (RC Causality SE) = false   [owise] .
+      ...
+    endm
+              </code> </pre>
+              <p>
+                For example, the predicate <code> Causality </code> is defined by specifying in what state it is valid and any other state than this will be invalid(<code>owise</code>).
+              </p>
+            </article>
             <article >
-              <h2>Observers</h2>
+              <h2>Observers: checkers</h2>
               <br>
               <p>
                 Module <code>SYSTEM-CHECK</code> defines observers of type checker. These Observers are defined with a LTL formula and are in charge of monitoring specific behaviors. The association of an observer with an observable system ( Consumer or a Producer) is made using the identifier of the objects, i.e., a checker and the observable it is associated to must have the same identifier (remember that in Muade the identity of and object depends of its type and its identifier). Additionally, monitors use LTL formulas aiming to look out the observable associated with it. Then, when the temporal formulas that the checker verifies are not fulfilled a reaction can be generated (if it was defined).
               </p>
               <br>
-              
+              <p>
+                There are several attributes that allow the observer definition. For example, the attribute <code>formula</code> that saves the formula that the observer must verify trouhg the execution. Besides, the attributes <code> end-c</code> and <code>count</code> allow the finish of execution.
+              </p>
+              <br>
+              <p>
+                As we mentioned previusly we use the module <code>CONFIGURATION</code> aiming to  define the particular objects, messages, and rules for interaction that are of interest. Thus, part of the definition of Producers is the following:
+              </p>
+              <br>            <br>
+              <pre><code>
+      op checker        :                          -> Cid           .
+      op Formula:_      : Ltl                      -> Attribute     .
+      op end-c:_        : Nat                      -> Attribute     .
+      op count:_        : Nat                      -> Attribute     .
+              </code> </pre>
+              <br>
+              <p>
+                In this way a complex base application whit several observables, one Producer, three Consumers and two checkers one associated to Producer 1 and the other related to Consumer 1. Is the following:
+              </p>
+              <br>
+              <pre> <code>
+      < 0 : Producer | cnt-prod: 0,frequency: 1,clock-p: (0 0 0 0 0),weights: 2,end: 7,finish: false,Notice-logs: nil >
+      < 1 : Consumer | current-mesg: none,freq-C: 2,actual-time: 0,logs: nil,limit: 20, clock-c:(0 0 0 0 0 ) >
+      < 2 : Consumer | current-mesg: none,freq-C: 1,actual-time: 0,logs: nil,limit: 20, clock-c:(0 0 0 0 0 ) >
+      < 3 : Consumer | current-mesg: none,freq-C: 5,actual-time: 0,logs: nil,limit: 20, clock-c:(0 0 0 0 0 ) >
+      < 0 : checker | Formula: (E (Order 0 of 1)) , finish: false , count: 0 , end-c: 50 >
+      < 1 : checker | Formula: (E (Order 1 of 0)) , finish: false , count: 0 , end-c: 50 >
+              </code> </pre>
+              <br>
+              <h2> Dynamic behavior</h2>
+              <br>
+              <p>
+                In Maude, we have specified the rules that represent the dynamic behavior.  Rules model concurrent  transitions that can take place in system. If the pattern in the rule’s left-hand side matches a fragment of the system state and the rule’s condition is satisfied. In that case, the rule can take place, and the matched fragment of the state is transformed into the corresponding instance of the right-hand side.   In this way, a rule is defined to model observer behavior. Notice that several variables are used because rules only need to mention the attributes and objects strictly necessary for model of concurrent transitions. Thus, <code>ATS</code> refers to a variable of type <code> AttributeSet </code> and <code>Con</code> refers to a variable of type <code>Configuration</code>, the other variables are related to his correspondent attribute type.
+              </p>
+              <br>
+
+
+              <details>
+                <summary> <code>[checker-Predicate]</code> </summary>
+                <br>
+                <p>
+                  Each time that this rule is done the checker verify the vality of formula saves in attribute <code>Formula</code> through the configuration at moment when the rule was applied, using the operation <code> verification</code> define above. Notice that this is a conditional rule then it can be aplicated only if the count is less or equal than the number difined at attribute <code>end-c</code>.
+                </p>
+                <br>
+                <pre><code>
+      crl [checker-Predicate] :
+      { < RC : checker | Formula: TL , finish: false, count: N , end-c: END >  Con }
+      =>
+      { < RC : checker | Formula: verification(TL,Con) , finish: false, count: s(N), end-c: END  >  Con }
+
+      if N <= END
+      .
+                </code></pre>
+                <br>
+              </details>
+
             </article>
 
           </section>
