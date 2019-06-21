@@ -24,7 +24,11 @@
           <h2>DRRF</h2>
           <br>
           <p>
-            We study the semantics of distributed reactive programming languages using rewriting logic. We propose <i>DRRF</i> (Distributed Reactive Rewriting Framework) a reactive event-based programming framework with explicit support for distribution, concurrency, and explicit time manipulation which has been developed on <i>Maude</i>.
+            Building programs and systems have become more complex and every day this complexity increase. Usually, when you start building,  the first step is to make a sketch or a model. This first model could be a bit nutty, but you can develop it very fast and this help to get an idea of how the design is going to be. Once the main design is defined,  a more complex model should be used to infer properties of the model. Consider that these models are cheaper than the current implementation (building) and the model could predict accurately the desired properties that the design will satisfy. Furthermore, the model must be quick to develop and must focus on the bottom line of the design in this way the model should abstract essential detail and behaviors. Our main idea is both simulate and infer properties (deadlocks, malicious behaviors, lost information,...) for the semantics of distributed reactive programming languages. We want to provide a way to infer that all possible behaviors of these systems satisfy the distributed reactive programming requirements.
+          </p>
+          <br>
+          <p>
+            We propose <i>DRRF</i> (Distributed Reactive Rewriting Framework) a reactive event-based programming framework with explicit support for distribution, concurrency, and explicit time manipulation which has been developed on <i>Maude</i>.
           </p>
           <br>
           <p>
@@ -33,7 +37,7 @@
           </p>
           <br>
           <p>
-            To model a distributed systems using Maude is a  straightforward task. They are modeled as entities, loosely coupled by some suitable communication mechanism. Maude provides a predefined module <code> CONFIGURATION</code> that declares sorts representing the essential concepts of object, attributes, message, along with a notation for object syntax. A configuration, base application, is a set of objects (Consumers & Producers) and messages that represent a snapshot of a possible system state. In this  framework, the entities are objects, each with a unique identity, and the communication mechanism is message passing using broadcast or unicast protocols.
+            To model distributed systems using Maude is a  straightforward task. They are modeled as entities, loosely coupled by some suitable communication mechanism. Maude provides a predefined module <code> CONFIGURATION</code> that declares sorts representing the essential concepts of object, attributes, message, along with a notation for object syntax. A configuration, base application, is a set of objects (Consumers & Producers) and messages that represent a snapshot of a possible system state. In this  framework, the entities are objects, each with a unique identity, and the communication mechanism is message passing using broadcast or unicast protocols.
           </p>
           <br>
           <p>
